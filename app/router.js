@@ -43,7 +43,15 @@ module.exports = app => {
 
     router.post('/admin/update_shop', app.oAuth2Server.authenticate(), controller.admin.shop.update);
 
-    // 认证相关
+    // 待处理商品相关
+    router.post('/admin/find_pending_goods', app.oAuth2Server.authenticate(), controller.admin.pendingGoods.find);
 
+    // router.post('/admin/add_goods_type_by_pending_goods', app.oAuth2Server.authenticate(), controller.admin.pendingGoods.createGoodsType);
+
+    // router.post('/admin/relation_goods_type_by_pending_goods', app.oAuth2Server.authenticate(), controller.admin.pendingGoods.relationGoodsType);
+
+    // router.get('/admin/fetch_brand_and_category', app.oAuth2Server.authenticate(), controller.admin.pendingGoods.fetchBrandAndCategory);
+
+    // 认证相关
     app.post('/oauth2/access_token', app.oAuth2Server.token(), controller.oauth.accessToken);
 };

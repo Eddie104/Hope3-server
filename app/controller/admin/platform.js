@@ -66,8 +66,9 @@ class PlatformController extends Controller {
             name: 'string',
             domain: 'string',
         });
+        const id = await this.ctx.service.createId.getId('Platform');
         const platform = new this.ctx.model.Platform({
-            name, domain,
+            id, name, domain,
         });
         await platform.save();
         this.success();

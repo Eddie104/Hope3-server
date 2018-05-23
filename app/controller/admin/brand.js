@@ -24,7 +24,8 @@ class BrandController extends Controller {
                 $options: 'i',
             };
         }
-        const list = await this.ctx.model.Brand.find(query).skip((page - 1) * count).limit(count);
+        const list = await this.ctx.model.Brand.find(query).skip((page - 1) * count).limit(count)
+            .sort({ id: 1 });
         const total = await this.ctx.model.Brand.count(query);
         this.success({
             list,
@@ -96,7 +97,12 @@ class BrandController extends Controller {
         } = this.ctx.request.body;
         let brand = await this.ctx.model.Brand.findOne({ name }, { name: 1 });
         if (!brand) {
-            brand = await this.ctx.service.createModel.createBrand(name);
+            const id = await this.ctx.service.createId.getId('Brand');
+            brand = new this.ctx.model.Brand({
+                id,
+                name,
+            });
+            await brand.save();
             this.success(brand);
         } else {
             this.fail(`已存在名字为${name}的品牌了`);

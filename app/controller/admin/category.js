@@ -10,7 +10,11 @@ class CategoryController extends Controller {
         } = this.ctx.request.body;
         let category = await this.ctx.model.Category.findOne({ name });
         if (!category) {
-            category = await this.ctx.service.createModel.createCategory(name);
+            const id = await this.ctx.service.createId.getId('Category');
+            category = new this.ctx.model.Category({
+                id, name,
+            });
+            await category.save();
             this.success(category);
         } else {
             this.fail(`已存在名为${name}的类目了`);
@@ -75,7 +79,13 @@ class CategoryController extends Controller {
                 if (sub_category[i]._id) {
                     await this.ctx.model.SubCategory.update({ _id: sub_category[i]._id }, { name: sub_category[i].name });
                 } else {
-                    subCategory = await this.ctx.service.createModel.createSubCategory(sub_category[i].name, _id);
+                    const id = await this.ctx.service.createId.getId('SubCategory');
+                    subCategory = new this.ctx.model.SubCategory({
+                        parent: _id,
+                        id,
+                        name: sub_category[i].name,
+                    });
+                    await subCategory.save();
                 }
             }
         }
