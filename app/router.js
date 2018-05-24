@@ -54,4 +54,6 @@ module.exports = app => {
 
     // 认证相关
     app.post('/oauth2/access_token', app.oAuth2Server.token(), controller.oauth.accessToken);
+
+    router.post('/admin/find_naifen', app.oAuth2Server.authenticate(), controller.naiFen.find);
 };
