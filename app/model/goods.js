@@ -11,5 +11,6 @@ module.exports = app => {
         number: { type: [ String ], default: [] },
         sku: { type: [{ size: Number, price: Number }], default: [] },
         imgs: { type: [ String ], default: [] },
+        platform_id: { type: mongoose.Schema.ObjectId, required: true },
     }, { collection: 'hope_goods' }));
 };

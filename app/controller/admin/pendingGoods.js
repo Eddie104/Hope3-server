@@ -29,7 +29,7 @@ class PendingGoodsController extends Controller {
             };
         }
         if (/\w{24}/.test(platform)) {
-            query.platform = platform;
+            query.platform_id = platform;
         }
         if (only_pending === true) {
             query.is_checked = { $ne: true };
@@ -45,6 +45,15 @@ class PendingGoodsController extends Controller {
                 current: page,
             },
             platform: platformList,
+        });
+    }
+
+    async fetchBrandAndCategory() {
+        const brands = await this.ctx.model.Brand.find({ is_deleted: false });
+        const category = await this.ctx.model.Category.find({}, { name: 1 });
+        this.success({
+            brands,
+            category,
         });
     }
 }

@@ -4,8 +4,8 @@ module.exports = app => {
      * 待处理的商品数据，也就是爬虫从网站上爬下来的数据
      */
     return mongoose.model('PendingGoods', new mongoose.Schema({
-        platform: { type: mongoose.Schema.ObjectId, required: true },
-        // platform: { type: String, required: true },
+        platform_id: mongoose.Schema.ObjectId,
+        platform: { type: String, required: true },
         id: { type: Number, required: true, index: true },
         name: { type: String, required: true, index: true },
         url: { type: String, required: true },
