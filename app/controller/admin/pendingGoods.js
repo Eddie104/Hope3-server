@@ -56,6 +56,12 @@ class PendingGoodsController extends Controller {
             category,
         });
     }
+
+    async setCheck() {
+        const { _id } = this.ctx.params;
+        await this.ctx.model.PendingGoods.update({ _id }, { $set: { is_checked: true } });
+        this.success();
+    }
 }
 
 module.exports = PendingGoodsController;
