@@ -7,7 +7,8 @@ module.exports = app => {
         id: { type: Number, required: true, index: true },
         colorName: { type: String, default: '' },
         colorValue: { type: String, default: '' },
-        number: { type: String, required: true, index: true },
-        imgs: { type: [ String ], default: [] },
+        number: { type: [ String ], default: [] },
+        img: { type: String, default: '' },
+        goods_id_arr: { type: [ mongoose.Schema.ObjectId ], default: [] },
     }, { collection: 'hope_goodscolors' }));
 };

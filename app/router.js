@@ -59,6 +59,8 @@ module.exports = app => {
 
     router.post('/admin/find_goods_type', app.oAuth2Server.authenticate(), controller.admin.goodsType.find);
 
+    router.get('/admin/detail_goods_type/:_id', app.oAuth2Server.authenticate(), controller.admin.goodsType.detail);
+
     // 认证相关
     app.post('/oauth2/access_token', app.oAuth2Server.token(), controller.oauth.accessToken);
 
