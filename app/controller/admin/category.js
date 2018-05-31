@@ -101,8 +101,12 @@ class CategoryController extends Controller {
 
     async fetchSubCategory() {
         const { _id } = this.ctx.params;
-        const subCategory = await this.ctx.model.SubCategory.find({ parent: _id });
-        this.success(subCategory);
+        if (this.ctx.helper.isObjectId(_id)) {
+            const subCategory = await this.ctx.model.SubCategory.find({ parent: _id });
+            this.success(subCategory);
+        } else {
+            this.success([]);
+        }
     }
 }
 

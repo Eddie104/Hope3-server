@@ -59,7 +59,21 @@ module.exports = app => {
 
     router.post('/admin/find_goods_type', app.oAuth2Server.authenticate(), controller.admin.goodsType.find);
 
+    router.post('/admin/update_goods_type', app.oAuth2Server.authenticate(), controller.admin.goodsType.update);
+
     router.get('/admin/detail_goods_type/:_id', app.oAuth2Server.authenticate(), controller.admin.goodsType.detail);
+
+    // 配色相关
+    router.get('/admin/detail_goods_color/:_id', app.oAuth2Server.authenticate(), controller.admin.goodsColor.detail);
+
+    router.post('/admin/update_goods_color', app.oAuth2Server.authenticate(), controller.admin.goodsColor.update);
+
+    // 商品相关
+    router.get('/admin/detail_goods/:_id', app.oAuth2Server.authenticate(), controller.admin.goods.detail);
+
+    router.post('/admin/find_goods', app.oAuth2Server.authenticate(), controller.admin.goods.find);
+
+    router.post('/admin/update_goods', app.oAuth2Server.authenticate(), controller.admin.goods.update);
 
     // 认证相关
     app.post('/oauth2/access_token', app.oAuth2Server.token(), controller.oauth.accessToken);

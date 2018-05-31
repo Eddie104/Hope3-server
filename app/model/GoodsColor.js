@@ -5,8 +5,8 @@ module.exports = app => {
      */
     return mongoose.model('GoodsColor', new mongoose.Schema({
         id: { type: Number, required: true, index: true },
-        colorName: { type: String, default: '' },
-        colorValue: { type: String, default: '' },
+        color_name: { type: String, default: '' },
+        color_value: { type: String, default: '' },
         number: { type: [ String ], default: [] },
         img: { type: String, default: '' },
         goods_id_arr: { type: [ mongoose.Schema.ObjectId ], default: [] },

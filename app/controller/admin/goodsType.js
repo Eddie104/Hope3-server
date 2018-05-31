@@ -38,25 +38,35 @@ class GoodsTypeController extends Controller {
     async detail() {
         const { _id } = this.ctx.params;
         const goodsType = await this.ctx.model.GoodsType.findOne({ _id });
+        const goodsColorArr = await this.ctx.model.GoodsColor.find({ _id: { $in: goodsType.goods_color_arr } });
         // 找出品牌数据
         const brands = await this.ctx.model.Brand.find();
         const category = await this.ctx.model.Category.find();
         if (goodsType) {
-            this.success({ goodsType, brands, category });
+            this.success({ goodsType, goodsColorArr, brands, category });
         } else {
             this.fail(`没有找到id为${_id}的款型`);
         }
     }
 
-    // async update() {
-    //     const {
-    //         id,
-    //         name,
-    //         domain,
-    //     } = this.ctx.request.body;
-    //     await this.ctx.model.Platform.update({ _id: id }, { $set: { name, domain } });
-    //     this.success();
-    // }
+    async update() {
+        const {
+            _id,
+            name,
+            gender,
+            brand,
+            series,
+            category,
+            sub_category,
+        } = this.ctx.request.body;
+        const data = { name, gender };
+        if (this.ctx.helper.isObjectId(brand)) data.brand = brand;
+        if (this.ctx.helper.isObjectId(series)) data.series = series;
+        if (this.ctx.helper.isObjectId(category)) data.category = category;
+        if (this.ctx.helper.isObjectId(sub_category)) data.sub_category = sub_category;
+        await this.ctx.model.GoodsType.update({ _id }, { $set: data });
+        this.success();
+    }
 
     async add() {
         const {
@@ -66,8 +76,8 @@ class GoodsTypeController extends Controller {
             subCategory,
             brand,
             series,
-            colorName,
-            colorValue,
+            color_name,
+            color_value,
             number,
             imgs,
             platform,
@@ -75,6 +85,7 @@ class GoodsTypeController extends Controller {
             url,
             size_price_arr,
         } = this.ctx.request.body;
+        console.log(this.ctx.request.body);
         let goodsType = await this.ctx.model.GoodsType.findOne({ name }, { id: 1 });
         if (!goodsType) {
             // 新建商品
@@ -93,8 +104,8 @@ class GoodsTypeController extends Controller {
             id = await this.ctx.service.createId.getId('GoodsColor');
             const goodsColor = new this.ctx.model.GoodsColor({
                 id,
-                colorName: colorName || '',
-                colorValue: colorValue || '',
+                color_name: color_name || '',
+                color_value: color_value || '',
                 number: [ number ],
                 img: Array.isArray(imgs) && imgs.length > 0 ? `${platform}/${imgs[0]}` : '',
                 goods_id_arr: [ goods._id ],
@@ -103,13 +114,13 @@ class GoodsTypeController extends Controller {
 
             id = await this.ctx.service.createId.getId('GoodsType');
             const data = {
-                id, name, goods_color_arr: [ goodsColor._id ],
+                id, name, goods_color_arr: [ goodsColor._id ], img: Array.isArray(imgs) && imgs.length > 0 ? `${platform}/${imgs[0]}` : '',
             };
             if (gender) { data.gender = gender; }
             if (category) { data.category = category; }
             if (subCategory) { data.subCategory = subCategory; }
             if (brand) { data.brand = brand; }
-            if (/\w{24}/.test(series)) { data.series = series; }
+            if (this.ctx.helper.isObjectId(series)) { data.series = series; }
             goodsType = new this.ctx.model.GoodsType(data);
             await goodsType.save();
             this.success();

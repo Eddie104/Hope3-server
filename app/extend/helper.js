@@ -192,4 +192,11 @@ module.exports = {
     unique(array) {
         return [ ...new Set(array) ];
     },
+
+    isObjectId(_id) {
+        if (_id) {
+            return /\w{24}/.test(_id);
+        }
+        return false;
+    },
 };

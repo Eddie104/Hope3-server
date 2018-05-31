@@ -9,7 +9,7 @@ module.exports = app => {
         name: { type: String, required: true },
         url: { type: String, required: true },
         number: { type: String, default: [] },
-        sku: { type: [{ size: Number, price: Number }], default: [] },
+        sku: { type: [{ size: Number, price: Number, isInStock: Boolean }], default: [] },
         imgs: { type: [ String ], default: [] },
         platform_id: { type: mongoose.Schema.ObjectId, required: true },
     }, { collection: 'hope_goods' }));
