@@ -58,6 +58,8 @@ module.exports = app => {
 
     // 款型相关
     router.post('/admin/add_goods_type', app.oAuth2Server.authenticate(), controller.admin.goodsType.add);
+    // 关联款型
+    router.post('/admin/connect_goods_type', app.oAuth2Server.authenticate(), controller.admin.goodsType.connect);
 
     router.post('/admin/find_goods_type', app.oAuth2Server.authenticate(), controller.admin.goodsType.find);
 

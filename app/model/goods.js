@@ -4,7 +4,6 @@ module.exports = app => {
      * 商品表
      */
     return mongoose.model('Goods', new mongoose.Schema({
-        // goods_color_id: { type: mongoose.Schema.ObjectId, required: true },
         id: { type: Number, required: true, index: true },
         name: { type: String, required: true },
         url: { type: String, required: true },

@@ -10,6 +10,7 @@ class GoodsTypeController extends Controller {
             name,
             page,
             count,
+            fields,
         } = this.ctx.request.body;
         page = page || 1;
         count = count || 10;
@@ -24,7 +25,7 @@ class GoodsTypeController extends Controller {
                 $options: 'i',
             };
         }
-        const list = await this.ctx.model.GoodsType.find(query).skip((page - 1) * count).limit(count);
+        const list = await this.ctx.model.GoodsType.find(query, fields || {}).skip((page - 1) * count).limit(count);
         const total = await this.ctx.model.GoodsType.count(query);
         this.success({
             list,
@@ -68,6 +69,70 @@ class GoodsTypeController extends Controller {
         this.success();
     }
 
+    /**
+     * 待处理物品关联到已有的款型上
+     */
+    async connect() {
+        const {
+            name,
+            color_name,
+            color_value,
+            number,
+            imgs,
+            platform,
+            platform_id,
+            url,
+            size_price_arr,
+            goods_type_id,
+        } = this.ctx.request.body;
+        console.log(this.ctx.request.body);
+        const goodsType = await this.ctx.model.GoodsType.findOne({ _id: goods_type_id }, { goods_color_arr: 1 });
+        if (!goodsType) {
+            // 新建商品
+            let id = await this.ctx.service.createId.getId('Goods');
+            const goods = new this.ctx.model.Goods({
+                id,
+                name,
+                url,
+                number,
+                sku: size_price_arr,
+                img: Array.isArray(imgs) && imgs.length > 0 ? `${platform}/${imgs[0]}` : '',
+                platform_id,
+            });
+            await goods.save();
+
+            // 根据number找到款型下面的配色，如果没有找到，那就new一个
+            let goodsColor = await this.ctx.model.GoodsColor.findOne({
+                _id: { $in: goodsType.goods_color_arr },
+                number,
+            }, { _id: 1 });
+            if (!goodsColor) {
+                // 新建配色
+                id = await this.ctx.service.createId.getId('GoodsColor');
+                goodsColor = new this.ctx.model.GoodsColor({
+                    id,
+                    color_name: color_name || '',
+                    color_value: color_value || '',
+                    number: [ number ],
+                    img: Array.isArray(imgs) && imgs.length > 0 ? `${platform}/${imgs[0]}` : '',
+                    goods_id_arr: [ goods._id ],
+                    // 配色和款型关联上
+                    goods_type_id,
+                });
+                await goodsColor.save();
+            } else {
+                await this.ctx.model.GoodsColor.update({
+                    _id: goodsColor._id,
+                }, { $addToSet: { goods_id_arr: goods._id } });
+            }
+            // 把商品和配色关联上
+            await this.ctx.model.Goods.update({ _id: goods._id }, { $set: { goods_color_id: goodsColor._id } });
+            this.success();
+        } else {
+            this.fail(`不存在_id为${goods_type_id}的款型`);
+        }
+    }
+
     async add() {
         const {
             name,
@@ -96,7 +161,7 @@ class GoodsTypeController extends Controller {
                 url,
                 number,
                 sku: size_price_arr,
-                imgs: imgs.map(img => `${platform}/${img}`),
+                img: Array.isArray(imgs) && imgs.length > 0 ? `${platform}/${imgs[0]}` : '',
                 platform_id,
             });
             await goods.save();
@@ -111,6 +176,8 @@ class GoodsTypeController extends Controller {
                 goods_id_arr: [ goods._id ],
             });
             await goodsColor.save();
+            // 把商品和配色关联上
+            await this.ctx.model.Goods.update({ _id: goods._id }, { $set: { goods_color_id: goodsColor._id } });
 
             id = await this.ctx.service.createId.getId('GoodsType');
             const data = {
@@ -123,6 +190,8 @@ class GoodsTypeController extends Controller {
             if (this.ctx.helper.isObjectId(series)) { data.series = series; }
             goodsType = new this.ctx.model.GoodsType(data);
             await goodsType.save();
+            // 把配色和款型关联上
+            await this.ctx.model.GoodsColor.update({ _id: goodsColor._id }, { $set: { goods_type_id: goodsType._id } });
             this.success();
         } else {
             this.fail(`已存在名字为${name}的款型了`);
