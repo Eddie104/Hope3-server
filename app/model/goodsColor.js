@@ -10,5 +10,6 @@ module.exports = app => {
         number: { type: [ String ], default: [] },
         img: { type: String, default: '' },
         goods_id_arr: { type: [ mongoose.Schema.ObjectId ], default: [] },
+        goods_type_id: mongoose.Schema.ObjectId,
     }, { collection: 'hope_goodscolors' }));
 };

@@ -10,7 +10,8 @@ module.exports = app => {
         url: { type: String, required: true },
         number: { type: String, default: [] },
         sku: { type: [{ size: Number, price: Number, isInStock: Boolean }], default: [] },
-        imgs: { type: [ String ], default: [] },
+        img: { type: String, default: '' },
         platform_id: { type: mongoose.Schema.ObjectId, required: true },
+        goods_color_id: mongoose.Schema.ObjectId,
     }, { collection: 'hope_goods' }));
 };
