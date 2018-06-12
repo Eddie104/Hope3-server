@@ -87,7 +87,7 @@ class GoodsTypeController extends Controller {
         } = this.ctx.request.body;
         console.log(this.ctx.request.body);
         const goodsType = await this.ctx.model.GoodsType.findOne({ _id: goods_type_id }, { goods_color_arr: 1 });
-        if (!goodsType) {
+        if (goodsType) {
             // 新建商品
             let id = await this.ctx.service.createId.getId('Goods');
             const goods = new this.ctx.model.Goods({
