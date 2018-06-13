@@ -26,9 +26,11 @@ def upload_2_qiniu(img_space, img_name, img_local_path):
 
 def main():
     # 上传到七牛
-    for (root, _, files) in os.walk('/usr/share/nginx/html/Hope3/champssports/'):
-        for file in files:
-            upload_2_qiniu('champssports/%s' % file, '0.jpg', os.path.join(root, file))
+	platform_arr = ['champssports', 'eastbay', 'finishline', 'flightclub']
+	for platform in platform_arr:
+		for (root, _, files) in os.walk('/usr/share/nginx/html/Hope3/%s/' % platform):
+			for file in files:
+				upload_2_qiniu(platform, file, os.path.join(root, file))
 
 if __name__ == '__main__':
     main()
