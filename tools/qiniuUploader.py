@@ -2,15 +2,14 @@
 # -*- coding: utf-8 -*-
 
 import os
-# from qiniu import Auth, put_file, etag, urlsafe_base64_encode
-import qiniu
+from qiniu import Auth, put_file, etag, urlsafe_base64_encode
 
 def upload_2_qiniu(img_space, img_name, img_local_path):
 	# 需要填写你的 Access Key 和 Secret Key
 	access_key = 'u8204eU35XvUiDcFE-NcctjgVtdUkeEeaR6UObWi'
 	secret_key = 'lFdpeVd89l5u5e7GKKapdqtI-yPAeHxB9NEDJPv-'
 	# 构建鉴权对象
-	q = qiniu.Auth(access_key, secret_key)
+	q = Auth(access_key, secret_key)
 	# 要上传的空间
 	bucket_name = 'hope3'
 	# 上传到七牛后保存的文件名
@@ -19,10 +18,10 @@ def upload_2_qiniu(img_space, img_name, img_local_path):
 	token = q.upload_token(bucket_name, key, 3600)
 	# 要上传文件的本地路径
 	localfile = img_local_path
-	ret, info = qiniu.put_file(token, key, localfile)
+	ret, info = put_file(token, key, localfile)
 	# print(info)
 	assert ret['key'] == key
-	assert ret['hash'] == qiniu.etag(localfile)
+	assert ret['hash'] == etag(localfile)
 
 
 def main():
