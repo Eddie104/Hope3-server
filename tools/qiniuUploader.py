@@ -22,6 +22,7 @@ def upload_2_qiniu(img_space, img_name, img_local_path):
 	# print(info)
 	assert ret['key'] == key
 	assert ret['hash'] == etag(localfile)
+	os.rename(img_local_path, '%s.upd' % img_local_path)
 
 
 def main():
@@ -30,7 +31,8 @@ def main():
 	for platform in platform_arr:
 		for (root, _, files) in os.walk('/usr/share/nginx/html/Hope3/%s/' % platform):
 			for file in files:
-				upload_2_qiniu(platform, file, os.path.join(root, file))
+				if not file.endswith('.upd'):
+					upload_2_qiniu(platform, file, os.path.join(root, file))
 
 if __name__ == '__main__':
     main()
