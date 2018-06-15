@@ -26,7 +26,7 @@ def upload_2_qiniu(img_space, img_name, img_local_path):
 
 def main():
     # 上传到七牛
-	platform_arr = ['champssports', 'eastbay', 'finishline', 'flightclub']
+	platform_arr = ['flightclub']
 	for platform in platform_arr:
 		for (root, _, files) in os.walk('/usr/share/nginx/html/Hope3/%s/' % platform):
 			for file in files:

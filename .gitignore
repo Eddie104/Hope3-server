@@ -13,3 +13,5 @@ run/
 imgs/
 app/public/
 *.pyc
+nohup.out
+.qiniu_pythonsdk_hostscache.json
