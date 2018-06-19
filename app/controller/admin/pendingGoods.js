@@ -82,7 +82,7 @@ class PendingGoodsController extends Controller {
         for (let i = 0; i < pendingGoodsArr.length; i++) {
             pendingGoods = pendingGoodsArr[i];
             img = Array.isArray(pendingGoods.imgs) && pendingGoods.imgs.length > 0 ? `${pendingGoods.platform}/${pendingGoods.imgs[0]}` : '';
-            goodsType = await this.ctx.model.GoodsType.findOne({ name: pendingGoods.name }, { goods_color_arr: 1 });
+            goodsType = await this.ctx.model.GoodsType.findOne({ name: pendingGoods.name, is_deleted: false }, { goods_color_arr: 1 });
             if (goodsType) {
                 // 新建商品
                 let id = await this.ctx.service.createId.getId('Goods');
@@ -135,7 +135,7 @@ class PendingGoodsController extends Controller {
             pendingGoods = pendingGoodsArr[i];
             goodsColor = await this.ctx.model.GoodsColor.findOne({ number: pendingGoods.number }, { goods_type_id: 1 });
             if (goodsColor) {
-                goodsType = await this.ctx.model.GoodsType.findOne({ _id: goodsColor.goods_type_id });
+                goodsType = await this.ctx.model.GoodsType.findOne({ _id: goodsColor.goods_type_id, is_deleted: false });
                 if (goodsType) {
                     // 新建商品
                     const id = await this.ctx.service.createId.getId('Goods');

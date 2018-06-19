@@ -18,7 +18,7 @@ class GoodsTypeController extends Controller {
         //     page: 'number',
         //     count: 'number',
         // });
-        const query = {};
+        const query = { is_deleted: false };
         if (name) {
             query.name = {
                 $regex: name,
@@ -38,7 +38,7 @@ class GoodsTypeController extends Controller {
 
     async detail() {
         const { _id } = this.ctx.params;
-        const goodsType = await this.ctx.model.GoodsType.findOne({ _id });
+        const goodsType = await this.ctx.model.GoodsType.findOne({ _id, is_deleted: false });
         const goodsColorArr = await this.ctx.model.GoodsColor.find({ _id: { $in: goodsType.goods_color_arr } });
         // 找出品牌数据
         const brands = await this.ctx.model.Brand.find();
@@ -86,7 +86,7 @@ class GoodsTypeController extends Controller {
             goods_type_id,
         } = this.ctx.request.body;
         console.log(this.ctx.request.body);
-        const goodsType = await this.ctx.model.GoodsType.findOne({ _id: goods_type_id }, { goods_color_arr: 1 });
+        const goodsType = await this.ctx.model.GoodsType.findOne({ _id: goods_type_id, is_deleted: false }, { goods_color_arr: 1 });
         if (goodsType) {
             // 新建商品
             let id = await this.ctx.service.createId.getId('Goods');
@@ -150,8 +150,8 @@ class GoodsTypeController extends Controller {
             url,
             size_price_arr,
         } = this.ctx.request.body;
-        console.log(this.ctx.request.body);
-        let goodsType = await this.ctx.model.GoodsType.findOne({ name }, { id: 1 });
+        // console.log(this.ctx.request.body);
+        let goodsType = await this.ctx.model.GoodsType.findOne({ name, is_deleted: false }, { id: 1 });
         if (!goodsType) {
             // 新建商品
             let id = await this.ctx.service.createId.getId('Goods');
@@ -196,6 +196,28 @@ class GoodsTypeController extends Controller {
         } else {
             this.fail(`已存在名字为${name}的款型了`);
         }
+    }
+
+    async merge() {
+        const {
+            mergeTargetGoodsType,
+            goodsTypeArr,
+        } = this.ctx.request.body;
+        let goodsType = null;
+        for (let i = 0; i < goodsTypeArr.length; i++) {
+            if (goodsTypeArr[i] !== mergeTargetGoodsType) {
+                goodsType = await this.ctx.model.GoodsType.findOne({ _id: goodsTypeArr[i], is_deleted: false }, { goods_color_arr: 1 });
+                if (goodsType) {
+                    for (let j = 0; j < goodsType.goods_color_arr.length; j++) {
+                        await this.ctx.model.GoodsType.update({
+                            _id: mergeTargetGoodsType,
+                        }, { $addToSet: { goods_color_arr: goodsType.goods_color_arr[j] } });
+                    }
+                    await this.ctx.model.GoodsType.update({ _id: goodsTypeArr[i] }, { $set: { is_deleted: true } });
+                }
+            }
+        }
+        this.success();
     }
 }
 

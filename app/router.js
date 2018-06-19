@@ -69,6 +69,8 @@ module.exports = app => {
 
     router.post('/admin/update_goods_type', app.oAuth2Server.authenticate(), controller.admin.goodsType.update);
 
+    router.post('/admin/merge_goods_type', app.oAuth2Server.authenticate(), controller.admin.goodsType.merge);
+
     router.get('/admin/detail_goods_type/:_id', app.oAuth2Server.authenticate(), controller.admin.goodsType.detail);
 
     // 配色相关
