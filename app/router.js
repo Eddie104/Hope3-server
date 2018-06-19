@@ -58,6 +58,8 @@ module.exports = app => {
 
     router.get('/admin/auto_connect_by_number', app.oAuth2Server.authenticate(), controller.admin.pendingGoods.autoConnectByNumber);
 
+    router.get('/admin/auto_connect_by_name', app.oAuth2Server.authenticate(), controller.admin.pendingGoods.autoConnectByName);
+
     // 款型相关
     router.post('/admin/add_goods_type', app.oAuth2Server.authenticate(), controller.admin.goodsType.add);
     // 关联款型
