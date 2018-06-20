@@ -6,10 +6,21 @@ class GoodsColorController extends Controller {
     }
 
     async detail() {
-        const { _id } = this.ctx.params;
+        let { _id, page, count } = this.ctx.request.body;
         const goodsColor = await this.ctx.model.GoodsColor.findOne({ _id });
         if (goodsColor) {
-            this.success({ goodsColor });
+            page = page || 1;
+            count = count || 10;
+            const query = { _id: { $in: goodsColor.goods_id_arr } };
+            const goodsArr = await this.ctx.model.Goods.find(query).skip((page - 1) * count).limit(count);;
+            const total = await this.ctx.model.Goods.count(query);
+            this.success({ goodsColor, goodsArr: {
+                list: goodsArr,
+                pagination: {
+                    total,
+                    current: page,
+                },
+            } });
         } else {
             this.fail(`没有找到id为${_id}的配色`);
         }
