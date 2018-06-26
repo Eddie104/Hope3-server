@@ -123,10 +123,11 @@ class GoodsTypeController extends Controller {
             } else {
                 await this.ctx.model.GoodsColor.update({
                     _id: goodsColor._id,
-                }, { $addToSet: { goods_id_arr: goods._id } });
+                }, { $addToSet: { goods_id_arr: goods._id, goods_type_id } });
             }
             // 把商品和配色关联上
             await this.ctx.model.Goods.update({ _id: goods._id }, { $set: { goods_color_id: goodsColor._id } });
+            await this.ctx.model.GoodsType.update({ _id: goods_type_id }, { $addToSet: { goods_color_arr: goodsColor._id } });
             this.success();
         } else {
             this.fail(`不存在_id为${goods_type_id}的款型`);

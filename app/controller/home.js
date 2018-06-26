@@ -81,6 +81,14 @@ class HomeController extends Controller {
         //         console.log('aaaaa', goodsColorArr[i].goods_type_id);
         //     }
         // }
+
+        // const goodsColorArr = await this.ctx.model.GoodsColor.find({}, { goods_type_id: 1 });
+        // let goodsColor = null;
+        // for (let i = 0; i < goodsColorArr.length; i++) {
+        //     console.log(`${i}/${goodsColorArr.length}`);
+        //     goodsColor = goodsColorArr[i];
+        //     await this.ctx.model.GoodsType.update({ _id: goodsColor.goods_type_id }, { $addToSet: { goods_color_arr: goodsColor._id } });
+        // }
         this.success();
     }
 }

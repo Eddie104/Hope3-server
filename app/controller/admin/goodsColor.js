@@ -12,7 +12,7 @@ class GoodsColorController extends Controller {
             page = page || 1;
             count = count || 10;
             const query = { _id: { $in: goodsColor.goods_id_arr } };
-            const goodsArr = await this.ctx.model.Goods.find(query).skip((page - 1) * count).limit(count);;
+            const goodsArr = await this.ctx.model.Goods.find(query).skip((page - 1) * count).limit(count);
             const total = await this.ctx.model.Goods.count(query);
             this.success({ goodsColor, goodsArr: {
                 list: goodsArr,
