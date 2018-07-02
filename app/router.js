@@ -78,6 +78,8 @@ module.exports = app => {
 
     router.post('/admin/update_goods_color', app.oAuth2Server.authenticate(), controller.admin.goodsColor.update);
 
+    router.post('/admin/merge_goods_color', app.oAuth2Server.authenticate(), controller.admin.goodsColor.merge);
+
     // 商品相关
     router.get('/admin/detail_goods/:_id', app.oAuth2Server.authenticate(), controller.admin.goods.detail);
 

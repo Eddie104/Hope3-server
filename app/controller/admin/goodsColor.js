@@ -40,6 +40,36 @@ class GoodsColorController extends Controller {
         } });
         this.success();
     }
+
+    async merge() {
+        const {
+            mergeTargetGoodsColor,
+            goodsColorArr,
+        } = this.ctx.request.body;
+        let goodsColor = null;
+        for (let i = 0; i < goodsColorArr.length; i++) {
+            if (goodsColorArr[i] !== mergeTargetGoodsColor) {
+                goodsColor = await this.ctx.model.GoodsColor.findOne({ _id: goodsColorArr[i] }, {
+                    number: 1, goods_id_arr: 1, goods_type_id: 1,
+                });
+                if (goodsColor) {
+                    for (let j = 0; j < goodsColor.number.length; j++) {
+                        await this.ctx.model.GoodsColor.update({ _id: mergeTargetGoodsColor }, {
+                            $addToSet: { number: goodsColor.number[j] },
+                        });
+                    }
+                    for (let j = 0; j < goodsColor.goods_id_arr.length; j++) {
+                        await this.ctx.model.GoodsColor.update({ _id: mergeTargetGoodsColor }, {
+                            $addToSet: { goods_id_arr: goodsColor.goods_id_arr[j] },
+                        });
+                    }
+                    await this.ctx.model.GoodsType.update({ _id: goodsColor.goods_type_id }, { $pull: { goods_color_arr: goodsColorArr[i] } });
+                    await this.ctx.model.Goods.update({ goods_color_id: goodsColorArr[i] }, { $set: { goods_color_id: mergeTargetGoodsColor } }, { multi: true });
+                }
+            }
+        }
+        this.success();
+    }
 }
 
 module.exports = GoodsColorController;
