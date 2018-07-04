@@ -50,6 +50,8 @@ module.exports = app => {
 
     router.get('/admin/set_pending_goods_check/:_id', app.oAuth2Server.authenticate(), controller.admin.pendingGoods.setCheck);
 
+    router.get('/admin/delete_pending_goods/:_id', app.oAuth2Server.authenticate(), controller.admin.pendingGoods.delete);
+
     // router.post('/admin/add_goods_type_by_pending_goods', app.oAuth2Server.authenticate(), controller.admin.pendingGoods.createGoodsType);
 
     // router.post('/admin/relation_goods_type_by_pending_goods', app.oAuth2Server.authenticate(), controller.admin.pendingGoods.relationGoodsType);

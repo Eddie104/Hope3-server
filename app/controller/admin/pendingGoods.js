@@ -12,6 +12,7 @@ class PendingGoodsController extends Controller {
             name,
             platform,
             only_pending,
+            is_deleted,
             page,
             count,
         } = this.ctx.request.body;
@@ -33,6 +34,11 @@ class PendingGoodsController extends Controller {
         }
         if (only_pending === true) {
             query.is_checked = { $ne: true };
+        }
+        if (is_deleted === 1) {
+            query.is_deleted = true;
+        } else if (is_deleted === 2) {
+            query.is_deleted = false;
         }
         const list = await this.ctx.model.PendingGoods.find(query).skip((page - 1) * count).limit(count);
         const total = await this.ctx.model.PendingGoods.count(query);
@@ -60,6 +66,12 @@ class PendingGoodsController extends Controller {
     async setCheck() {
         const { _id } = this.ctx.params;
         await this.ctx.model.PendingGoods.update({ _id }, { $set: { is_checked: true } });
+        this.success();
+    }
+
+    async delete() {
+        const { _id } = this.ctx.params;
+        await this.ctx.model.PendingGoods.update({ _id }, { $set: { is_deleted: true } });
         this.success();
     }
 

@@ -19,5 +19,6 @@ module.exports = app => {
             default: [],
         },
         imgs: { type: [ String ], default: [] },
+        is_deleted: { type: Boolean, default: false },
     }, { collection: 'hope_pendinggoods' }));
 };
