@@ -70,6 +70,22 @@ class GoodsColorController extends Controller {
         }
         this.success();
     }
+
+    async removeGoods() {
+        const { _id, goods_id } = this.ctx.params;
+        console.log(_id);
+        console.log(goods_id);
+        let goods_color = await this.ctx.model.GoodsColor.findOne({ _id, goods_id_arr: goods_id }, { goods_id_arr: 1 });
+        if (goods_color) {
+            const goods = await this.ctx.model.Goods.findOne({ _id: goods_id }, { url: 1 });
+            await this.ctx.model.Goods.remove({ _id: goods_id });
+            await this.ctx.model.PendingGoods.update({ url: goods.url }, { is_checked: false });
+            goods_color = await this.ctx.model.GoodsColor.update({ _id }, { $pull: { goods_id_arr: goods_id } }, { new: true });
+            this.success();
+        } else {
+            this.fail(`没有找到_id为${_id}包含goods_id为${goods_id}的配色`);
+        }
+    }
 }
 
 module.exports = GoodsColorController;

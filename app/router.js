@@ -82,6 +82,8 @@ module.exports = app => {
 
     router.post('/admin/merge_goods_color', app.oAuth2Server.authenticate(), controller.admin.goodsColor.merge);
 
+    router.get('/admin/remove_goods/:_id/:goods_id', app.oAuth2Server.authenticate(), controller.admin.goodsColor.removeGoods);
+
     // 商品相关
     router.get('/admin/detail_goods/:_id', app.oAuth2Server.authenticate(), controller.admin.goods.detail);
 
