@@ -220,6 +220,27 @@ class GoodsTypeController extends Controller {
         }
         this.success();
     }
+
+    async removeGoodsColor() {
+        const { _id, goods_color_id } = this.ctx.params;
+        const goodsType = await this.ctx.model.GoodsType.findOne({ _id, goods_color_arr: goods_color_id }, { goods_color_arr: 1 });
+        if (goodsType) {
+            const goodsColor = await this.ctx.model.GoodsColor.findOne({ _id: goods_color_id }, { goods_id_arr: 1 });
+            if (goodsColor) {
+                if (goodsColor.goods_id_arr.length < 1) {
+                    await this.ctx.model.GoodsColor.remove({ _id: goods_color_id });
+                    await this.ctx.model.GoodsType.update({ $pull: { goods_color_arr: goods_color_id } });
+                    this.success();
+                } else {
+                    this.fail(`_id为${goods_color_id}的配色还有商品数据，不能删除!`);
+                }
+            } else {
+                this.fail(`没有找到_id为${goods_color_id}的配色`);
+            }
+        } else {
+            this.fail(`没有找到_id为${_id}包含配色_id为${goods_color_id}的款型`);
+        }
+    }
 }
 
 module.exports = GoodsTypeController;

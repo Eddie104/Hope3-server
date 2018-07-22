@@ -75,6 +75,8 @@ module.exports = app => {
 
     router.get('/admin/detail_goods_type/:_id', app.oAuth2Server.authenticate(), controller.admin.goodsType.detail);
 
+    router.get('/admin/remove_goods_color/:_id/:goods_color_id', app.oAuth2Server.authenticate(), controller.admin.goodsType.removeGoodsColor);
+
     // 配色相关
     router.post('/admin/detail_goods_color', app.oAuth2Server.authenticate(), controller.admin.goodsColor.detail);
 
