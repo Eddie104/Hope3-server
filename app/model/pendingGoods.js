@@ -8,7 +8,7 @@ module.exports = app => {
         platform: { type: String, required: true },
         id: { type: Number, required: true, index: true },
         name: { type: String, required: true, index: true },
-        url: { type: String, required: true },
+        url: { type: String, required: true, index: true },
         color_name: { type: String, default: '' },
         color_value: { type: String, default: '' },
         number: { type: String, required: true, index: true },
@@ -20,5 +20,6 @@ module.exports = app => {
         },
         imgs: { type: [ String ], default: [] },
         is_deleted: { type: Boolean, default: false },
+        img_downloaded: { type: Boolean, default: false },
     }, { collection: 'hope_pendinggoods' }));
 };
