@@ -108,6 +108,7 @@ class PendingGoodsController extends Controller {
                     img,
                     platform_id: pendingGoods.platform_id,
                     gender: pendingGoods.gender,
+                    goods_type_id: goodsType._id,
                 });
                 await goods.save();
                 // 新建配色
@@ -163,6 +164,7 @@ class PendingGoodsController extends Controller {
                         img: Array.isArray(pendingGoods.imgs) && pendingGoods.imgs.length > 0 ? `${pendingGoods.platform}/${pendingGoods.imgs[0]}` : '',
                         platform_id: pendingGoods.platform_id,
                         gender: pendingGoods.gender,
+                        goods_color_id: goodsType._id,
                     });
                     await goods.save();
 

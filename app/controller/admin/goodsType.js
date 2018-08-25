@@ -100,6 +100,7 @@ class GoodsTypeController extends Controller {
                 img: Array.isArray(imgs) && imgs.length > 0 ? `${platform}/${imgs[0]}` : '',
                 platform_id,
                 gender,
+                goods_color_id: goodsType._id,
             });
             await goods.save();
 
@@ -196,6 +197,7 @@ class GoodsTypeController extends Controller {
             await goodsType.save();
             // 把配色和款型关联上
             await this.ctx.model.GoodsColor.update({ _id: goodsColor._id }, { $set: { goods_type_id: goodsType._id } });
+            await this.ctx.model.Goods.update({ _id: goods._id }, { $set: { goods_type_id: goodsType._id } });
             this.success();
         } else {
             this.fail(`已存在名字为${name}的款型了`);

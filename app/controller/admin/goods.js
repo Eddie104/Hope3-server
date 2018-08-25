@@ -25,8 +25,12 @@ class GoodsController extends Controller {
             };
         }
         const list = await this.ctx.model.Goods.find(query).skip((page - 1) * count).limit(count);
+        // 带上款型
+        const goodsTypeIdArr = list.map(goods => goods.goods_type_id);
+        const goodsTypeArr = await this.ctx.model.GoodsType.find({ _id: { $in: goodsTypeIdArr } }, { name: 1, img: 1 });
         const total = await this.ctx.model.Goods.count(query);
         this.success({
+            goodsTypeArr,
             list,
             pagination: {
                 total,

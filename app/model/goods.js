@@ -13,6 +13,7 @@ module.exports = app => {
         img: { type: String, default: '' },
         platform_id: { type: mongoose.Schema.ObjectId, required: true },
         goods_color_id: mongoose.Schema.ObjectId,
+        goods_type_id: mongoose.Schema.ObjectId,
         // 性别，0是所有 1是男 2是女
         gender: { type: Number, default: 0 },
     }, { collection: 'hope_goods' }));
