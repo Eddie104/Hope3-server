@@ -21,5 +21,7 @@ module.exports = app => {
         imgs: { type: [ String ], default: [] },
         is_deleted: { type: Boolean, default: false },
         img_downloaded: { type: Boolean, default: false },
+        // 性别，0是所有 1是男 2是女
+        gender: { type: Number, default: 0 },
     }, { collection: 'hope_pendinggoods' }));
 };

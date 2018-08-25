@@ -84,6 +84,7 @@ class GoodsTypeController extends Controller {
             url,
             size_price_arr,
             goods_type_id,
+            gender,
         } = this.ctx.request.body;
         console.log(this.ctx.request.body);
         const goodsType = await this.ctx.model.GoodsType.findOne({ _id: goods_type_id, is_deleted: false }, { goods_color_arr: 1 });
@@ -98,6 +99,7 @@ class GoodsTypeController extends Controller {
                 sku: size_price_arr,
                 img: Array.isArray(imgs) && imgs.length > 0 ? `${platform}/${imgs[0]}` : '',
                 platform_id,
+                gender,
             });
             await goods.save();
 
@@ -164,6 +166,7 @@ class GoodsTypeController extends Controller {
                 sku: size_price_arr,
                 img: Array.isArray(imgs) && imgs.length > 0 ? `${platform}/${imgs[0]}` : '',
                 platform_id,
+                gender,
             });
             await goods.save();
             // 新建配色

@@ -86,6 +86,7 @@ class PendingGoodsController extends Controller {
             platform_id: 1,
             color_name: 1,
             color_value: 1,
+            gender: 1,
         });
         let pendingGoods = null;
         let goodsColor = null;
@@ -106,6 +107,7 @@ class PendingGoodsController extends Controller {
                     sku: pendingGoods.size_price_arr,
                     img,
                     platform_id: pendingGoods.platform_id,
+                    gender: pendingGoods.gender,
                 });
                 await goods.save();
                 // 新建配色
@@ -139,6 +141,7 @@ class PendingGoodsController extends Controller {
             imgs: 1,
             platform: 1,
             platform_id: 1,
+            gender: 1,
         });
         let pendingGoods = null;
         let goodsColor = null;
@@ -159,6 +162,7 @@ class PendingGoodsController extends Controller {
                         sku: pendingGoods.size_price_arr,
                         img: Array.isArray(pendingGoods.imgs) && pendingGoods.imgs.length > 0 ? `${pendingGoods.platform}/${pendingGoods.imgs[0]}` : '',
                         platform_id: pendingGoods.platform_id,
+                        gender: pendingGoods.gender,
                     });
                     await goods.save();
 
