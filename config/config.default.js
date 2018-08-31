@@ -38,13 +38,17 @@ module.exports = appInfo => {
 
     config.mongoose = {
         // url: 'mongodb://localhost:27017/Hope3',
-        url: 'mongodb://47.100.164.90:27017/Hope3',
+        url: 'mongodb://106.15.93.73:27017/Hope3',
         options: {
             db: { native_parser: true },
             server: {
-                poolSize: 5,
+                poolSize: 10,
                 auto_reconnect: true,
-                socketOptions: { keepAlive: 1 },
+                socketOptions: {
+                    keepAlive: 1,
+                    socketTimeoutMS: 60000,
+                    connectTimeoutMS: 60000,
+                },
             },
         },
     };
