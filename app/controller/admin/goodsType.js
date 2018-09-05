@@ -190,7 +190,7 @@ class GoodsTypeController extends Controller {
             };
             if (gender) { data.gender = gender; }
             if (category) { data.category = category; }
-            if (subCategory) { data.subCategory = subCategory; }
+            if (subCategory) { data.sub_category = subCategory; }
             if (brand) { data.brand = brand; }
             if (this.ctx.helper.isObjectId(series)) { data.series = series; }
             goodsType = new this.ctx.model.GoodsType(data);
