@@ -8,6 +8,11 @@ class GoodsTypeController extends Controller {
     async find() {
         let {
             name,
+            gender,
+            category,
+            subCategory,
+            brand,
+            series,
             page,
             count,
             fields,
@@ -25,14 +30,37 @@ class GoodsTypeController extends Controller {
                 $options: 'i',
             };
         }
+        if (gender >= 0) {
+            query.gender = gender;
+        }
+        if (category !== -1) {
+            query.category = category;
+        }
+        if (subCategory !== -1) {
+            query.sub_category = subCategory;
+        }
+        if (brand !== -1) {
+            query.brand = brand;
+        }
+        if (series !== -1) {
+            query.series = series;
+        }
         const list = await this.ctx.model.GoodsType.find(query, fields || {}).skip((page - 1) * count).limit(count);
         const total = await this.ctx.model.GoodsType.count(query);
+        // 带上分类和子分类的数据
+        const categoryArr = await this.ctx.model.Category.find();
+        // 找出品牌数据
+        const brands = await this.ctx.model.Brand.find();
         this.success({
-            list,
-            pagination: {
-                total,
-                current: page,
+            listData: {
+                list,
+                pagination: {
+                    total,
+                    current: page,
+                },
             },
+            category: categoryArr,
+            brands,
         });
     }
 
