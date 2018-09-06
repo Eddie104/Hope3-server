@@ -90,14 +90,18 @@ class HomeController extends Controller {
         //     await this.ctx.model.GoodsType.update({ _id: goodsColor.goods_type_id }, { $addToSet: { goods_color_arr: goodsColor._id } });
         // }
 
-        const goodsArr = await this.ctx.model.Goods.find({ goods_type_id: { $exists: false } }, { _id: 1 });
-        let goodsColor = null;
-        for (let i = 0; i < goodsArr.length; i++) {
-            goodsColor = await this.ctx.model.GoodsColor.findOne({ goods_id_arr: goodsArr[i]._id }, { goods_type_id: 1 });
-            if (goodsColor) {
-                await this.ctx.model.Goods.update({ _id: goodsArr[i]._id }, { $set: { goods_type_id: goodsColor.goods_type_id } });
-            }
-        }
+        // const goodsArr = await this.ctx.model.Goods.find({ goods_type_id: { $exists: false } }, { _id: 1 });
+        // let goodsColor = null;
+        // for (let i = 0; i < goodsArr.length; i++) {
+        //     goodsColor = await this.ctx.model.GoodsColor.findOne({ goods_id_arr: goodsArr[i]._id }, { goods_type_id: 1 });
+        //     if (goodsColor) {
+        //         await this.ctx.model.Goods.update({ _id: goodsArr[i]._id }, { $set: { goods_type_id: goodsColor.goods_type_id } });
+        //     }
+        // }
+
+        // const pendingGoodsArr = await this.ctx.model.PendingGoods.find({ platform: 'finishline' }, { url: 1 });
+        // const urlArr = this.ctx.helper.unique(pendingGoodsArr.map(p => p.url));
+        // console.log(urlArr.length);
         this.success('done');
     }
 }
