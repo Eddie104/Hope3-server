@@ -102,6 +102,36 @@ class HomeController extends Controller {
         // const pendingGoodsArr = await this.ctx.model.PendingGoods.find({ platform: 'finishline' }, { url: 1 });
         // const urlArr = this.ctx.helper.unique(pendingGoodsArr.map(p => p.url));
         // console.log(urlArr.length);
+        /*
+        // ObjectId("5ac8594e48555b1ba31896ba")
+        // ObjectId("5af1310e48555b1ba3387bcc")
+        const model = this.ctx.model;
+        const removedPlatformIdArr = [ '5ac8594e48555b1ba31896ba', '5af1310e48555b1ba3387bcc' ];
+        await model.PendingGoods.remove({ platform_id: { $in: removedPlatformIdArr } });
+        const goodsIdArr = await model.Goods.find({ platform_id: { $in: removedPlatformIdArr } }, { _id: 1 });
+        await model.Goods.remove({ platform_id: { $in: removedPlatformIdArr } });
+        let goodsColor = null;
+        let goodsType = null;
+        for (let i = 0; i < goodsIdArr.length; i++) {
+            goodsColor = await model.GoodsColor.findOne({ goods_id_arr: goodsIdArr[i] }, { goods_type_id: 1, goods_id_arr: 1 });
+            if (goodsColor) {
+                if (goodsColor.goods_id_arr.length > 1) {
+                    await model.GoodsColor.update({ _id: goodsColor._id }, { $pull: { goods_id_arr: goodsIdArr[i]._id } });
+                } else {
+                    await model.GoodsColor.remove({ _id: goodsColor._id });
+                    goodsType = await model.GoodsType.findOne({ goods_color_arr: goodsColor._id }, { goods_color_arr: 1 });
+                    if (goodsType) {
+                        if (goodsType.goods_color_arr.length > 1) {
+                            await model.GoodsType.update({ _id: goodsType._id }, { $pull: { goods_color_arr: goodsColor._id } });
+                        } else {
+                            await model.GoodsType.remove({ _id: goodsType._id });
+                        }
+                    }
+                }
+            }
+            console.log(`${i + 1}/${goodsIdArr.length}`);
+        }
+        */
         this.success('done');
     }
 }
