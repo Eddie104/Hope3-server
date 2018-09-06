@@ -30,19 +30,19 @@ class GoodsTypeController extends Controller {
                 $options: 'i',
             };
         }
-        if (gender >= 0) {
+        if (gender && gender >= 0) {
             query.gender = gender;
         }
-        if (category !== -1) {
+        if (category && category !== -1) {
             query.category = category;
         }
-        if (subCategory !== -1) {
+        if (subCategory && subCategory !== -1) {
             query.sub_category = subCategory;
         }
-        if (brand !== -1) {
+        if (brand && brand !== -1) {
             query.brand = brand;
         }
-        if (series !== -1) {
+        if (series && series !== -1) {
             query.series = series;
         }
         const list = await this.ctx.model.GoodsType.find(query, fields || {}).skip((page - 1) * count).limit(count);
