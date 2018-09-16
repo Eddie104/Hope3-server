@@ -30,7 +30,9 @@ class GoodsTypeController extends Controller {
                 $options: 'i',
             };
         }
-        if (gender && gender >= 0) {
+        if (gender === -2) {
+            query.gender = null;
+        } else if (gender && gender >= 0) {
             query.gender = gender;
         }
         if (category === 0) {
