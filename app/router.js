@@ -95,4 +95,7 @@ module.exports = app => {
 
     // 认证相关
     app.post('/oauth2/access_token', app.oAuth2Server.token(), controller.oauth.accessToken);
+
+    // webhook
+    app.post('/webhook/push_admin', controller.webhook.pushAdmin);
 };
