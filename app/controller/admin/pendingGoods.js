@@ -134,7 +134,9 @@ class PendingGoodsController extends Controller {
     }
 
     async autoConnectByNumber() {
-        const pendingGoodsArr = await this.ctx.model.PendingGoods.find({ is_checked: { $ne: true } }, {
+        const pendingGoodsArr = await this.ctx.model.PendingGoods.find({
+            is_checked: { $ne: true },
+        }, {
             name: 1,
             number: 1,
             url: 1,

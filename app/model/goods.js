@@ -16,5 +16,7 @@ module.exports = app => {
         goods_type_id: mongoose.Schema.ObjectId,
         // 性别，0是所有 1是男 2是女
         gender: { type: Number, default: 0 },
+        // 是否缺货了
+        is_out_stock: { type: Boolean, default: false },
     }, { collection: 'hope_goods' }));
 };
