@@ -8,6 +8,7 @@
     "bytes": "^3.0.0",
     "chalk": "^2.3.0",
     "cheerio": "^1.0.0-rc.2",
+    "child_process": "^1.0.2",
     "egg": "^2.0.0",
     "egg-cors": "^2.0.0",
     "egg-logger": "^1.6.1",

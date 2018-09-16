@@ -23,6 +23,8 @@ module.exports = app => {
         img_downloaded: { type: Boolean, default: false },
         // 性别，0是所有 1是男 2是女
         gender: { type: Number, default: 0 },
+        // 爬虫更新的次数，如果小于identityCounter表里记录的值，说明此次更新中没有该商品
+        update_counter: { type: Number, default: 0 },
         // 是否缺货了
         is_out_stock: { type: Boolean, default: false },
     }, { collection: 'hope_pendinggoods' }));
