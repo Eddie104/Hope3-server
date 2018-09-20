@@ -91,6 +91,7 @@ class PendingGoodsController extends Controller {
         let pendingGoods = null;
         let goodsColor = null;
         let goodsType = null;
+        let crawlCount = 0;
         let img = null;
         for (let i = 0; i < pendingGoodsArr.length; i++) {
             pendingGoods = pendingGoodsArr[i];
@@ -99,6 +100,7 @@ class PendingGoodsController extends Controller {
             if (goodsType) {
                 // 新建商品
                 let id = await this.ctx.service.createId.getId('Goods');
+                crawlCount = await this.ctx.model.IdentityCounter.findOne({ model: `${pendingGoods.platform}CrawlCounter` }, { count: 1 });
                 const goods = new this.ctx.model.Goods({
                     id,
                     name: pendingGoods.name,
@@ -109,6 +111,7 @@ class PendingGoodsController extends Controller {
                     platform_id: pendingGoods.platform_id,
                     gender: pendingGoods.gender,
                     goods_type_id: goodsType._id,
+                    update_counter: crawlCount ? crawlCount.count : 0,
                 });
                 await goods.save();
                 // 新建配色
@@ -149,6 +152,7 @@ class PendingGoodsController extends Controller {
         let pendingGoods = null;
         let goodsColor = null;
         let goodsType = null;
+        let crawlCount = null;
         for (let i = 0; i < pendingGoodsArr.length; i++) {
             pendingGoods = pendingGoodsArr[i];
             goodsColor = await this.ctx.model.GoodsColor.findOne({ number: pendingGoods.number }, { goods_type_id: 1 });
@@ -157,6 +161,7 @@ class PendingGoodsController extends Controller {
                 if (goodsType) {
                     // 新建商品
                     const id = await this.ctx.service.createId.getId('Goods');
+                    crawlCount = await this.ctx.model.IdentityCounter.findOne({ model: `${pendingGoods.platform}CrawlCounter` }, { count: 1 });
                     const goods = new this.ctx.model.Goods({
                         id,
                         name: pendingGoods.name,
@@ -167,6 +172,7 @@ class PendingGoodsController extends Controller {
                         platform_id: pendingGoods.platform_id,
                         gender: pendingGoods.gender,
                         goods_color_id: goodsType._id,
+                        update_counter: crawlCount ? crawlCount.count : 0,
                     });
                     await goods.save();
 

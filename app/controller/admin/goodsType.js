@@ -129,6 +129,7 @@ class GoodsTypeController extends Controller {
         if (goodsType) {
             // 新建商品
             let id = await this.ctx.service.createId.getId('Goods');
+            const crawlCount = await this.ctx.model.IdentityCounter.findOne({ model: `${platform}CrawlCounter` }, { count: 1 });
             const goods = new this.ctx.model.Goods({
                 id,
                 name,
@@ -139,6 +140,7 @@ class GoodsTypeController extends Controller {
                 platform_id,
                 gender,
                 goods_color_id: goodsType._id,
+                update_counter: crawlCount ? crawlCount.count : 0,
             });
             await goods.save();
 
@@ -197,6 +199,7 @@ class GoodsTypeController extends Controller {
         if (!goodsType) {
             // 新建商品
             let id = await this.ctx.service.createId.getId('Goods');
+            const crawlCount = await this.ctx.model.IdentityCounter.findOne({ model: `${platform}CrawlCounter` }, { count: 1 });
             const goods = new this.ctx.model.Goods({
                 id,
                 name,
@@ -206,6 +209,7 @@ class GoodsTypeController extends Controller {
                 img: Array.isArray(imgs) && imgs.length > 0 ? `${platform}/${imgs[0]}` : '',
                 platform_id,
                 gender,
+                update_counter: crawlCount ? crawlCount.count : 0,
             });
             await goods.save();
             // 新建配色
