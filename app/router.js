@@ -58,7 +58,8 @@ module.exports = app => {
 
     router.get('/admin/fetch_brand_and_category', app.oAuth2Server.authenticate(), controller.admin.pendingGoods.fetchBrandAndCategory);
 
-    router.get('/admin/auto_connect_by_number', app.oAuth2Server.authenticate(), controller.admin.pendingGoods.autoConnectByNumber);
+    // router.get('/admin/auto_connect_by_number', app.oAuth2Server.authenticate(), controller.admin.pendingGoods.autoConnectByNumber);
+    router.get('/admin/auto_connect_by_number', controller.admin.pendingGoods.autoConnectByNumber);
 
     router.get('/admin/auto_connect_by_name', app.oAuth2Server.authenticate(), controller.admin.pendingGoods.autoConnectByName);
 

@@ -124,7 +124,6 @@ class GoodsTypeController extends Controller {
             goods_type_id,
             gender,
         } = this.ctx.request.body;
-        console.log(this.ctx.request.body);
         const goodsType = await this.ctx.model.GoodsType.findOne({ _id: goods_type_id, is_deleted: false }, { goods_color_arr: 1 });
         if (goodsType) {
             // 新建商品
@@ -261,6 +260,9 @@ class GoodsTypeController extends Controller {
                             _id: mergeTargetGoodsType,
                         }, { $addToSet: { goods_color_arr: goodsType.goods_color_arr[j] } });
                     }
+                    await this.ctx.model.GoodsColor.update({
+                        _id: { $in: goodsType.goods_color_arr },
+                    }, { $set: { goods_type_id: mergeTargetGoodsType } }, { multi: true });
                     await this.ctx.model.GoodsType.update({ _id: goodsTypeArr[i] }, { $set: { is_deleted: true } });
                 }
             }

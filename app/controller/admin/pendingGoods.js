@@ -139,6 +139,10 @@ class PendingGoodsController extends Controller {
     async autoConnectByNumber() {
         const pendingGoodsArr = await this.ctx.model.PendingGoods.find({
             is_checked: { $ne: true },
+            name: {
+                $regex: 'jordan',
+                $options: 'i',
+            },
         }, {
             name: 1,
             number: 1,
@@ -150,41 +154,60 @@ class PendingGoodsController extends Controller {
             gender: 1,
         });
         let pendingGoods = null;
+        let goodsColorArr = null;
         let goodsColor = null;
         let goodsType = null;
         let crawlCount = null;
+        let pendingGoodsNumber = null;
         for (let i = 0; i < pendingGoodsArr.length; i++) {
+            console.log(`${i}/${pendingGoodsArr.length}`);
             pendingGoods = pendingGoodsArr[i];
-            goodsColor = await this.ctx.model.GoodsColor.findOne({ number: pendingGoods.number }, { goods_type_id: 1 });
-            if (goodsColor) {
-                goodsType = await this.ctx.model.GoodsType.findOne({ _id: goodsColor.goods_type_id, is_deleted: false });
-                if (goodsType) {
-                    // 新建商品
-                    const id = await this.ctx.service.createId.getId('Goods');
-                    crawlCount = await this.ctx.model.IdentityCounter.findOne({ model: `${pendingGoods.platform}CrawlCounter` }, { count: 1 });
-                    const goods = new this.ctx.model.Goods({
-                        id,
-                        name: pendingGoods.name,
-                        url: pendingGoods.url,
-                        number: pendingGoods.number,
-                        sku: pendingGoods.size_price_arr,
-                        img: Array.isArray(pendingGoods.imgs) && pendingGoods.imgs.length > 0 ? `${pendingGoods.platform}/${pendingGoods.imgs[0]}` : '',
-                        platform_id: pendingGoods.platform_id,
-                        gender: pendingGoods.gender,
-                        goods_color_id: goodsType._id,
-                        update_counter: crawlCount ? crawlCount.count : 0,
-                    });
-                    await goods.save();
+            pendingGoodsNumber = pendingGoods.number;
+            if (pendingGoodsNumber.indexOf(' ') !== -1) {
+                pendingGoodsNumber = pendingGoodsNumber.split(' ')[0];
+            } else if (pendingGoodsNumber.indexOf('-') !== -1) {
+                pendingGoodsNumber = pendingGoodsNumber.split('-')[0];
+            }
+            goodsColorArr = await this.ctx.model.GoodsColor.find({
+                number: {
+                    $regex: pendingGoodsNumber,
+                    $options: 'i',
+                },
+            }, { goods_type_id: 1 });
+            if (goodsColorArr && goodsColorArr.length > 0) {
+                // const goodsTypeIdArr = [ ...new Set(goodsColorArr.map(item => item.goods_type_id)) ];
+                for (let j = 0; j < goodsColorArr.length; j++) {
+                    goodsColor = goodsColorArr[j];
+                    goodsType = await this.ctx.model.GoodsType.findOne({ _id: goodsColor.goods_type_id, is_deleted: false });
+                    if (goodsType) {
+                        // 新建商品
+                        const id = await this.ctx.service.createId.getId('Goods');
+                        crawlCount = await this.ctx.model.IdentityCounter.findOne({ model: `${pendingGoods.platform}CrawlCounter` }, { count: 1 });
+                        const goods = new this.ctx.model.Goods({
+                            id,
+                            name: pendingGoods.name,
+                            url: pendingGoods.url,
+                            number: pendingGoods.number,
+                            sku: pendingGoods.size_price_arr,
+                            img: Array.isArray(pendingGoods.imgs) && pendingGoods.imgs.length > 0 ? `${pendingGoods.platform}/${pendingGoods.imgs[0]}` : '',
+                            platform_id: pendingGoods.platform_id,
+                            gender: pendingGoods.gender,
+                            goods_type_id: goodsType._id,
+                            update_counter: crawlCount ? crawlCount.count : 0,
+                        });
+                        await goods.save();
 
-                    // 配色和款型关联上
-                    await this.ctx.model.GoodsColor.update({
-                        _id: goodsColor._id,
-                    }, { $addToSet: { goods_id_arr: goods._id } });
+                        // 配色和款型关联上
+                        await this.ctx.model.GoodsColor.update({
+                            _id: goodsColor._id,
+                        }, { $addToSet: { goods_id_arr: goods._id } });
 
-                    // 把商品和配色关联上
-                    await this.ctx.model.Goods.update({ _id: goods._id }, { $set: { goods_color_id: goodsColor._id } });
-                    await this.ctx.model.PendingGoods.update({ _id: pendingGoods._id }, { $set: { is_checked: true } });
-                    await this.ctx.model.GoodsType.update({ _id: goodsType._id }, { $addToSet: { goods_color_arr: goodsColor._id } });
+                        // 把商品和配色关联上
+                        await this.ctx.model.Goods.update({ _id: goods._id }, { $set: { goods_color_id: goodsColor._id } });
+                        await this.ctx.model.PendingGoods.update({ _id: pendingGoods._id }, { $set: { is_checked: true } });
+                        await this.ctx.model.GoodsType.update({ _id: goodsType._id }, { $addToSet: { goods_color_arr: goodsColor._id } });
+                        break;
+                    }
                 }
             }
         }
