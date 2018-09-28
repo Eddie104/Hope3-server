@@ -167,6 +167,16 @@ class PendingGoodsController extends Controller {
                 pendingGoodsNumber = pendingGoodsNumber.split(' ')[0];
             } else if (pendingGoodsNumber.indexOf('-') !== -1) {
                 pendingGoodsNumber = pendingGoodsNumber.split('-')[0];
+            } else {
+                // 如果最后一位不是数字的话，就去掉最后的四位
+                const lastChar = pendingGoodsNumber.substr(pendingGoodsNumber.length - 1, 1);
+                if (isNaN(lastChar)) {
+                    // 去掉最后的四位
+                    pendingGoodsNumber = pendingGoodsNumber.substring(0, pendingGoodsNumber.length - 4);
+                } else {
+                    // 去掉最后的三位
+                    pendingGoodsNumber = pendingGoodsNumber.substring(0, pendingGoodsNumber.length - 3);
+                }
             }
             goodsColorArr = await this.ctx.model.GoodsColor.find({
                 number: {
