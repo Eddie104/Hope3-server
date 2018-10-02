@@ -31,11 +31,13 @@ class GoodsColorController extends Controller {
             _id,
             color_name,
             color_value,
+            color_type,
             number,
         } = this.ctx.request.body;
         await this.ctx.model.GoodsColor.update({ _id }, { $set: {
             color_name,
             color_value,
+            color_type,
             number,
         } });
         this.success();
