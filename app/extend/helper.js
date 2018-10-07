@@ -50,10 +50,10 @@ module.exports = {
         return typeof val === 'undefined';
     },
 
-    toInt(val) {
+    toInt(val, defaultValue = 0) {
         val = parseInt(val);
         if (isNaN(val)) {
-            val = 0;
+            val = defaultValue;
         }
         return val;
     },
