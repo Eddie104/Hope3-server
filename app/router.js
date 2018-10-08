@@ -109,5 +109,5 @@ module.exports = app => {
     // PUT     /posts/:id	    post	app.controllers.posts.update
     // DELETE  /posts/:id	    post	app.controllers.posts.destroy
     // app
-    router.resources('shoes', '/api/shoes', controller.app.shoes);
+    router.resources('goodsType', '/api/goodsType', controller.app.goodsType);
 };

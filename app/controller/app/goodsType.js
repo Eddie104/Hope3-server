@@ -5,14 +5,14 @@ class ShoesController extends Controller {
         let { page, pageSize } = this.ctx.query;
         page = this.ctx.helper.toInt(page, 1);
         pageSize = this.ctx.helper.toInt(pageSize, 10);
-        const shoesArr = await this.ctx.model.Goods.find().skip((page - 1) * pageSize).limit(pageSize);
-        this.success(shoesArr);
+        const goodsTypeArr = await this.ctx.model.GoodsType.find().skip((page - 1) * pageSize).limit(pageSize);
+        this.success(goodsTypeArr);
     }
 
     async show() {
         const { id } = this.ctx.params;
-        const shoes = await this.ctx.model.Goods.findOne({ _id: id });
-        this.success(shoes);
+        const goodsType = await this.ctx.model.GoodsType.findOne({ _id: id });
+        this.success(goodsType);
     }
 }
 
