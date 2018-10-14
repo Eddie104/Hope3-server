@@ -160,6 +160,31 @@ class BrandController extends Controller {
         });
         this.success();
     }
+
+    async setSeriesTop() {
+        const { seriesId, isTop } = this.ctx.request.body;
+        const brand = await this.ctx.model.Brand.findOneAndUpdate({
+            'series._id': seriesId,
+        }, {
+            $set: {
+                'series.$.is_top': isTop,
+            },
+        }, {
+            new: true,
+        });
+        this.success(brand);
+    }
+
+    async getTopSeries() {
+        const brandArr = await this.ctx.model.Brand.find({
+            'series.is_top': true,
+        }, { series: 1 }).lean();
+        let seriesArr = [];
+        for (let i = 0; i < brandArr.length; i++) {
+            seriesArr = [ ...seriesArr, ...brandArr[i].series.filter(s => s.is_top) ];
+        }
+        this.success(seriesArr);
+    }
 }
 
 module.exports = BrandController;

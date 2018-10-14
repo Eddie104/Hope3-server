@@ -30,6 +30,10 @@ module.exports = app => {
 
     router.post('/admin/set_seried_img', app.oAuth2Server.authenticate(), controller.admin.brand.setSeriesImg);
 
+    router.post('/admin/set_series_top', app.oAuth2Server.authenticate(), controller.admin.brand.setSeriesTop);
+
+    router.get('/admin/get_top_series', app.oAuth2Server.authenticate(), controller.admin.brand.getTopSeries);
+
     // 类目相关
     router.post('/admin/add_category', app.oAuth2Server.authenticate(), controller.admin.category.add);
 
