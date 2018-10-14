@@ -26,6 +26,10 @@ module.exports = app => {
 
     router.get('/admin/remove_brand/:id', app.oAuth2Server.authenticate(), controller.admin.brand.remove);
 
+    router.get('/admin/fetch_goods_img_by_seriesId/:seriesId/:page/:pageSize', app.oAuth2Server.authenticate(), controller.admin.brand.fetchGoodsImgBySeriesId);
+
+    router.post('/admin/set_seried_img', app.oAuth2Server.authenticate(), controller.admin.brand.setSeriesImg);
+
     // 类目相关
     router.post('/admin/add_category', app.oAuth2Server.authenticate(), controller.admin.category.add);
 
