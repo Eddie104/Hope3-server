@@ -1,6 +1,6 @@
 const Controller = require('../../core/baseController');
 
-class GoodsTypeController extends Controller {
+class GoodsController extends Controller {
     async index() {
         let { page, pageSize } = this.ctx.query;
         page = this.ctx.helper.toInt(page, 1);
@@ -16,4 +16,4 @@ class GoodsTypeController extends Controller {
     }
 }
 
-module.exports = GoodsTypeController;
+module.exports = GoodsController;
