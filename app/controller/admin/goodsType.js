@@ -267,6 +267,7 @@ class GoodsTypeController extends Controller {
                 }
             }
         }
+        this.ctx.logger.info(`[merge] => mergeTargetGoodsType = ${mergeTargetGoodsType} goodsTypeArr = ${goodsTypeArr.join(',')}`);
         this.success();
     }
 
