@@ -87,6 +87,8 @@ module.exports = app => {
 
     router.post('/api/admin/merge_goods_color', app.oAuth2Server.authenticate(), controller.admin.goodsColor.merge);
 
+    router.get('/api/admin/find_popular/:page/:count', app.oAuth2Server.authenticate(), controller.admin.goodsColor.findPopular);
+
     router.get('/api/admin/remove_goods/:_id/:goods_id', app.oAuth2Server.authenticate(), controller.admin.goodsColor.removeGoods);
 
     // 商品相关

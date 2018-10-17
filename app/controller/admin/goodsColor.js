@@ -5,6 +5,25 @@ class GoodsColorController extends Controller {
         this.success('hi, welcome to goodsColor controller!');
     }
 
+    async findPopular() {
+        let { page, count } = this.ctx.params;
+        page = this.ctx.helper.toInt(page, 1);
+        count = this.ctx.helper.toInt(count, 10);
+        const query = {
+            is_popular: true,
+        };
+        const goodsColorArr = await this.ctx.model.GoodsColor.find(query)
+            .skip((page - 1) * count).limit(count);
+        const total = await this.ctx.model.GoodsColor.count(query);
+        this.success({
+            list: goodsColorArr,
+            pagination: {
+                total,
+                current: page,
+            },
+        });
+    }
+
     async detail() {
         let { _id, page, count } = this.ctx.request.body;
         const goodsColor = await this.ctx.model.GoodsColor.findOne({ _id });
@@ -34,17 +53,11 @@ class GoodsColorController extends Controller {
     async update() {
         const {
             _id,
-            color_name,
-            color_value,
-            color_type,
-            number,
         } = this.ctx.request.body;
-        await this.ctx.model.GoodsColor.update({ _id }, { $set: {
-            color_name,
-            color_value,
-            color_type,
-            number,
-        } });
+        const newData = { ...this.ctx.request.body };
+        delete newData._id;
+        delete newData.from;
+        await this.ctx.model.GoodsColor.update({ _id }, { $set: newData });
         this.success();
     }
 
