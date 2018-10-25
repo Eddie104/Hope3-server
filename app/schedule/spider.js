@@ -1,19 +1,32 @@
-module.exports = {
-    schedule: {
-        // *    *    *    *    *    *
-        // ┬    ┬    ┬    ┬    ┬    ┬
-        // │    │    │    │    │    |
-        // │    │    │    │    │    └ day of week (0 - 7) (0 or 7 is Sun)
-        // │    │    │    │    └───── month (1 - 12)
-        // │    │    │    └────────── day of month (1 - 31)
-        // │    │    └─────────────── hour (0 - 23)
-        // │    └──────────────────── minute (0 - 59)
-        // └───────────────────────── second (0 - 59, optional)
-        cron: '0 0 22 * * *',
-        type: 'worker',
-    },
+const Subscription = require('egg').Subscription;
 
-    async task() {
+class Spider extends Subscription {
+    // 通过 schedule 属性来设置定时任务的执行间隔等配置
+    static get schedule() {
+        return {
+            // interval: '3s',
+            // type: 'all', // 指定所有的 worker 都需要执行
+            // *    *    *    *    *    *
+            // ┬    ┬    ┬    ┬    ┬    ┬
+            // │    │    │    │    │    |
+            // │    │    │    │    │    └ day of week(0 - 7)(0 or 7 is Sun)
+            // │    │    │    │    └───── month(1 - 12)
+            // │    │    │    └────────── day of month(1 - 31)
+            // │    │    └─────────────── hour(0 - 23)
+            // │    └──────────────────── minute(0 - 59)
+            // └───────────────────────── second(0 - 59, optional)
+            cron: '0 20 22 * * *',
+            cronOptions: { tz: 'Asia/Shanghai' },
+            type: 'worker',
+            immediate: false,
+            disable: false,
+        };
+    }
+
+    // subscribe 是真正定时任务执行时被运行的函数
+    async subscribe() {
         await this.ctx.service.spider.run();
-    },
-};
+    }
+}
+
+module.exports = Spider;
