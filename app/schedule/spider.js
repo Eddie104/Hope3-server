@@ -9,15 +9,11 @@ module.exports = {
         // │    │    └─────────────── hour (0 - 23)
         // │    └──────────────────── minute (0 - 59)
         // └───────────────────────── second (0 - 59, optional)
-        cron: '0 0 */3 * * *',
+        cron: '0 0 22 * * *',
         type: 'worker',
     },
 
     async task() {
-        // const res = await ctx.curl('http://www.api.com/cache', {
-        //     dataType: 'json',
-        // });
-        // ctx.app.cache = res.data;
-
+        await this.ctx.service.spider.run();
     },
 };
