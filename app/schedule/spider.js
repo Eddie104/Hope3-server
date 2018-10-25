@@ -15,7 +15,7 @@ class Spider extends Subscription {
             // │    │    └─────────────── hour(0 - 23)
             // │    └──────────────────── minute(0 - 59)
             // └───────────────────────── second(0 - 59, optional)
-            cron: '0 20 22 * * *',
+            cron: '0 30 22 * * *',
             cronOptions: { tz: 'Asia/Shanghai' },
             type: 'worker',
             immediate: false,
@@ -25,6 +25,7 @@ class Spider extends Subscription {
 
     // subscribe 是真正定时任务执行时被运行的函数
     async subscribe() {
+        this.ctx.logger.info('======== run spider =========');
         await this.ctx.service.spider.run();
     }
 }
