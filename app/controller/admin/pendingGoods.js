@@ -140,7 +140,7 @@ class PendingGoodsController extends Controller {
         const pendingGoodsArr = await this.ctx.model.PendingGoods.find({
             is_checked: { $ne: true },
             name: {
-                $regex: 'jordan',
+                $regex: 'nike',
                 $options: 'i',
             },
         }, {
