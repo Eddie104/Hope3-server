@@ -37,6 +37,21 @@ class HomeController extends Controller {
         //     }, { multi: true });
         //     console.log(`${i}/${goodsTypeArr.length}`);
         // }
+
+        // const goodsColorArr = await this.ctx.model.GoodsColor.find({ goods_type_id: null });
+        // let goodsType = null;
+        // for (let i = 0; i < goodsColorArr.length; i++) {
+        //     goodsType = await this.ctx.model.GoodsType.findOne({ goods_color_arr: goodsColorArr[i]._id });
+        //     if (goodsType) {
+        //         await this.ctx.model.GoodsColor.update({
+        //             _id: goodsColorArr[i]._id,
+        //         }, {
+        //             $set: {
+        //                 goods_type_id: goodsType._id,
+        //             },
+        //         });
+        //     }
+        // }
         this.success('done');
     }
 }

@@ -114,6 +114,77 @@ class BrandController extends Controller {
         await this.ctx.model.Brand.findOneAndUpdate({ _id: id }, { is_deleted: true });
         this.success(id);
     }
+
+    async fetchGoodsImgBySeriesId() {
+        let { seriesId, page, pageSize } = this.ctx.params;
+        page = this.ctx.helper.toInt(page, 1);
+        pageSize = this.ctx.helper.toInt(pageSize, 10);
+        const brand = await this.ctx.model.Brand.findOne({ 'series._id': seriesId }, { series: 1 });
+        let series = null;
+        for (let i = 0; i < brand.series.length; i++) {
+            series = brand.series[i];
+            if (series._id.toString() === seriesId) break;
+            series = null;
+        }
+        const goodsTypeArr = await this.ctx.model.GoodsType.find({
+            series: seriesId,
+        }, { _id: 1 }).lean();
+        const goodsTypeIdArr = goodsTypeArr.map(goodsType => goodsType._id.toString());
+        const list = await this.ctx.model.Goods.find({
+            goods_type_id: { $in: goodsTypeIdArr },
+        }, {
+            img: 1,
+        }).skip((page - 1) * pageSize).limit(pageSize);
+        const total = await this.ctx.model.Goods.count({
+            goods_type_id: { $in: goodsTypeIdArr },
+        });
+        this.success({
+            seriesImg: series.img,
+            list,
+            pagination: {
+                total,
+                current: page,
+            },
+        });
+    }
+
+    async setSeriesImg() {
+        const { brandId, seriesId, img } = this.ctx.request.body;
+        await this.ctx.model.Brand.update({
+            _id: brandId,
+            'series._id': seriesId,
+        }, {
+            $set: {
+                'series.$.img': img,
+            },
+        });
+        this.success();
+    }
+
+    async setSeriesTop() {
+        const { seriesId, isTop } = this.ctx.request.body;
+        const brand = await this.ctx.model.Brand.findOneAndUpdate({
+            'series._id': seriesId,
+        }, {
+            $set: {
+                'series.$.is_top': isTop,
+            },
+        }, {
+            new: true,
+        });
+        this.success(brand);
+    }
+
+    async getTopSeries() {
+        const brandArr = await this.ctx.model.Brand.find({
+            'series.is_top': true,
+        }, { series: 1 }).lean();
+        let seriesArr = [];
+        for (let i = 0; i < brandArr.length; i++) {
+            seriesArr = [ ...seriesArr, ...brandArr[i].series.filter(s => s.is_top) ];
+        }
+        this.success(seriesArr);
+    }
 }
 
 module.exports = BrandController;

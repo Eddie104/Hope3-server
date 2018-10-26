@@ -5,6 +5,25 @@ class GoodsColorController extends Controller {
         this.success('hi, welcome to goodsColor controller!');
     }
 
+    async findPopular() {
+        let { page, count } = this.ctx.params;
+        page = this.ctx.helper.toInt(page, 1);
+        count = this.ctx.helper.toInt(count, 10);
+        const query = {
+            is_popular: true,
+        };
+        const goodsColorArr = await this.ctx.model.GoodsColor.find(query)
+            .skip((page - 1) * count).limit(count);
+        const total = await this.ctx.model.GoodsColor.count(query);
+        this.success({
+            list: goodsColorArr,
+            pagination: {
+                total,
+                current: page,
+            },
+        });
+    }
+
     async detail() {
         let { _id, page, count } = this.ctx.request.body;
         const goodsColor = await this.ctx.model.GoodsColor.findOne({ _id });
@@ -14,13 +33,18 @@ class GoodsColorController extends Controller {
             const query = { _id: { $in: goodsColor.goods_id_arr } };
             const goodsArr = await this.ctx.model.Goods.find(query).skip((page - 1) * count).limit(count);
             const total = await this.ctx.model.Goods.count(query);
-            this.success({ goodsColor, goodsArr: {
-                list: goodsArr,
-                pagination: {
-                    total,
-                    current: page,
+            const goodsType = await this.ctx.model.GoodsType.findOne({ _id: goodsColor.goods_type_id }, { img: 1, name: 1 });
+            this.success({
+                goodsColor,
+                goodsType,
+                goodsArr: {
+                    list: goodsArr,
+                    pagination: {
+                        total,
+                        current: page,
+                    },
                 },
-            } });
+            });
         } else {
             this.fail(`没有找到id为${_id}的配色`);
         }
@@ -29,15 +53,11 @@ class GoodsColorController extends Controller {
     async update() {
         const {
             _id,
-            color_name,
-            color_value,
-            number,
         } = this.ctx.request.body;
-        await this.ctx.model.GoodsColor.update({ _id }, { $set: {
-            color_name,
-            color_value,
-            number,
-        } });
+        const newData = { ...this.ctx.request.body };
+        delete newData._id;
+        delete newData.from;
+        await this.ctx.model.GoodsColor.update({ _id }, { $set: newData });
         this.success();
     }
 
