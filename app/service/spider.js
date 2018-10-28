@@ -5,10 +5,17 @@ const Service = require('egg').Service;
 class SpiderService extends Service {
 
     async run() {
-        child_process.exec('cd /home/Hope3-spider/ && python spider.py goat', (error, stdout, stderr) => {
-            this.ctx.logger.info('error  => ');
-            this.ctx.logger.info(error);
-            this.ctx.logger.info('stderr => ' + stderr);
+        const ls = child_process.spawn('cd /home/Hope3-spider/ && python spider.py goat');
+        ls.stdout.on('data', data => {
+            this.ctx.logger.info('stdout: ' + data);
+        });
+
+        ls.stderr.on('data', data => {
+            this.ctx.logger.info('stderr: ' + data);
+        });
+
+        ls.on('exit', code => {
+            this.ctx.logger.info('child process exited with code ' + code);
         });
         return true;
     }
