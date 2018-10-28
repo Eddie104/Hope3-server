@@ -15,7 +15,7 @@ class Spider extends Subscription {
             // │    │    └─────────────── hour(0 - 23)
             // │    └──────────────────── minute(0 - 59)
             // └───────────────────────── second(0 - 59, optional)
-            cron: '0 15 14 * * *',
+            cron: '0 25 14 * * *',
             cronOptions: { tz: 'Asia/Shanghai' },
             type: 'worker',
             immediate: false,
