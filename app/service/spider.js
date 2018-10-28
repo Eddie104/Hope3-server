@@ -6,7 +6,7 @@ class SpiderService extends Service {
 
     async run() {
         // const ls = child_process.spawn('cd /home/Hope3-spider/ && python spider.py goat');
-        const ls = child_process.spawn('python /home/Hope3-spider/spider.py goat');
+        const ls = child_process.spawn('python', [ '/home/Hope3-spider/spider.py', 'goat' ]);
         ls.stdout.on('data', data => {
             this.ctx.logger.info('stdout: ' + data);
         });
