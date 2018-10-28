@@ -15,7 +15,7 @@ class Spider extends Subscription {
             // │    │    └─────────────── hour(0 - 23)
             // │    └──────────────────── minute(0 - 59)
             // └───────────────────────── second(0 - 59, optional)
-            cron: '0 05 18 * * *',
+            cron: '0 0 20 * * *',
             cronOptions: { tz: 'Asia/Shanghai' },
             type: 'worker',
             immediate: false,
@@ -27,6 +27,7 @@ class Spider extends Subscription {
     async subscribe() {
         this.ctx.logger.info('======== run spider =========');
         await this.ctx.service.spider.run();
+        this.ctx.logger.info('======== running spider =========');
     }
 }
 
