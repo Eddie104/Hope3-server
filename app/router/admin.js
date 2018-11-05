@@ -76,6 +76,8 @@ module.exports = app => {
 
     router.post('/api/admin/merge_goods_type', app.oAuth2Server.authenticate(), controller.admin.goodsType.merge);
 
+    router.get('/api/admin/unmerge_goods_type/:mergeTargetGoodsType/:goodsTypeArr', controller.admin.goodsType.unMerge);
+
     router.get('/api/admin/detail_goods_type/:_id', app.oAuth2Server.authenticate(), controller.admin.goodsType.detail);
 
     router.get('/api/admin/remove_goods_color/:_id/:goods_color_id', app.oAuth2Server.authenticate(), controller.admin.goodsType.removeGoodsColor);

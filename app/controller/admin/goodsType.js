@@ -271,6 +271,30 @@ class GoodsTypeController extends Controller {
         this.success();
     }
 
+    async unMerge() {
+        let {
+            mergeTargetGoodsType,
+            goodsTypeArr,
+        } = this.ctx.params;
+        goodsTypeArr = goodsTypeArr.split(',');
+        let goodsType = null;
+        for (let i = 0; i < goodsTypeArr.length; i++) {
+            goodsType = await this.ctx.model.GoodsType.findOne({ _id: goodsTypeArr[i], is_deleted: true }, { goods_color_arr: 1 });
+            if (goodsType) {
+                for (let j = 0; j < goodsType.goods_color_arr.length; j++) {
+                    await this.ctx.model.GoodsType.update({
+                        _id: mergeTargetGoodsType,
+                    }, { $pull: { goods_color_arr: goodsType.goods_color_arr[j] } });
+                }
+                await this.ctx.model.GoodsColor.update({
+                    _id: { $in: goodsType.goods_color_arr },
+                }, { $set: { goods_type_id: goodsTypeArr[i] } }, { multi: true });
+                await this.ctx.model.GoodsType.update({ _id: goodsTypeArr[i] }, { $set: { is_deleted: false } });
+            }
+        }
+        this.success();
+    }
+
     async removeGoodsColor() {
         const { _id, goods_color_id } = this.ctx.params;
         const goodsType = await this.ctx.model.GoodsType.findOne({ _id, goods_color_arr: goods_color_id }, { goods_color_arr: 1 });
