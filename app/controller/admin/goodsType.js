@@ -25,9 +25,9 @@ class GoodsTypeController extends Controller {
         //     page: 'number',
         //     count: 'number',
         // });
-        const query = [{ is_deleted: false }];
+        const queryArr = [{ is_deleted: false }];
         if (name) {
-            query.push({
+            queryArr.push({
                 name: {
                     $regex: name,
                     $options: 'i',
@@ -35,7 +35,7 @@ class GoodsTypeController extends Controller {
             });
         }
         if (key1) {
-            query.push({
+            queryArr.push({
                 name: {
                     $regex: key1,
                     $options: 'i',
@@ -43,7 +43,7 @@ class GoodsTypeController extends Controller {
             });
         }
         if (key2) {
-            query.push({
+            queryArr.push({
                 name: {
                     $regex: key2,
                     $options: 'i',
@@ -51,44 +51,45 @@ class GoodsTypeController extends Controller {
             });
         }
         if (gender && gender >= 0) {
-            query.push({
+            queryArr.push({
                 gender,
             });
         } else if (gender === -1) {
-            query.push({
+            queryArr.push({
                 gender: null,
             });
         }
         if (category && category !== -1) {
-            query.push({
+            queryArr.push({
                 category,
             });
         } else if (category !== 0) {
-            query.push({
+            queryArr.push({
                 category: null,
             });
         }
         if (subCategory === 0) {
-            query.push({
+            queryArr.push({
                 sub_category: null,
             });
         } else if (subCategory && subCategory !== -1) {
-            query.push({ subCategory });
+            queryArr.push({ subCategory });
         }
         if (brand === 0) {
-            query.push({
+            queryArr.push({
                 brand: null,
             });
         } else if (brand && brand !== -1) {
-            query.push({ brand });
+            queryArr.push({ brand });
         }
         if (series === 0) {
-            query.push({
+            queryArr.push({
                 series: null,
             });
         } else if (series && series !== -1) {
-            query.push({ series });
+            queryArr.push({ series });
         }
+        const query = { $and: queryArr };
         const list = await this.ctx.model.GoodsType.find(query, fields || {}).skip((page - 1) * count).limit(count);
         const total = await this.ctx.model.GoodsType.count(query);
         // 带上分类和子分类的数据
