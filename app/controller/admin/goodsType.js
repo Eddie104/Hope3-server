@@ -8,8 +8,8 @@ class GoodsTypeController extends Controller {
     async find() {
         let {
             name,
-            key1,
-            key2,
+            // key1,
+            // key2,
             gender,
             category,
             subCategory,
@@ -25,71 +25,56 @@ class GoodsTypeController extends Controller {
         //     page: 'number',
         //     count: 'number',
         // });
-        const queryArr = [{ is_deleted: false }];
+        const query = { is_deleted: false };
+        // const nameQuery = [];
         if (name) {
-            queryArr.push({
-                name: {
-                    $regex: name,
-                    $options: 'i',
-                },
-            });
+            // nameQuery.push({
+            //     $regex: name,
+            //     $options: 'i',
+            // });
+            query.name = {
+                $regex: new RegExp(`[(${name})]`),
+                $options: 'i',
+            };
         }
-        if (key1) {
-            queryArr.push({
-                name: {
-                    $regex: key1,
-                    $options: 'i',
-                },
-            });
+        // if (key1) {
+        //     nameQuery.push({
+        //         $regex: key1,
+        //         $options: 'i',
+        //     });
+        // }
+        // if (key2) {
+        //     nameQuery.push({
+        //         $regex: key2,
+        //         $options: 'i',
+        //     });
+        // }
+        // query.name = { $and: nameQuery };
+        if (gender === -2) {
+            query.gender = null;
+        } else if (gender && gender >= 0) {
+            query.gender = gender;
         }
-        if (key2) {
-            queryArr.push({
-                name: {
-                    $regex: key2,
-                    $options: 'i',
-                },
-            });
-        }
-        if (gender && gender >= 0) {
-            queryArr.push({
-                gender,
-            });
-        } else if (gender === -1) {
-            queryArr.push({
-                gender: null,
-            });
-        }
-        if (category && category !== -1) {
-            queryArr.push({
-                category,
-            });
-        } else if (category !== 0) {
-            queryArr.push({
-                category: null,
-            });
+        if (category === 0) {
+            query.category = null;
+        } else if (category && category !== -1) {
+            query.category = category;
         }
         if (subCategory === 0) {
-            queryArr.push({
-                sub_category: null,
-            });
+            query.sub_category = null;
         } else if (subCategory && subCategory !== -1) {
-            queryArr.push({ subCategory });
+            query.sub_category = subCategory;
         }
         if (brand === 0) {
-            queryArr.push({
-                brand: null,
-            });
+            query.brand = null;
         } else if (brand && brand !== -1) {
-            queryArr.push({ brand });
+            query.brand = brand;
         }
         if (series === 0) {
-            queryArr.push({
-                series: null,
-            });
+            query.series = null;
         } else if (series && series !== -1) {
-            queryArr.push({ series });
+            query.series = series;
         }
-        const query = { $and: queryArr };
         const list = await this.ctx.model.GoodsType.find(query, fields || {}).skip((page - 1) * count).limit(count);
         const total = await this.ctx.model.GoodsType.count(query);
         // 带上分类和子分类的数据
