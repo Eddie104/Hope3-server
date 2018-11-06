@@ -8,6 +8,8 @@ class GoodsTypeController extends Controller {
     async find() {
         let {
             name,
+            key1,
+            key2,
             gender,
             category,
             subCategory,
@@ -24,12 +26,26 @@ class GoodsTypeController extends Controller {
         //     count: 'number',
         // });
         const query = { is_deleted: false };
+        const nameQuery = [];
         if (name) {
-            query.name = {
+            nameQuery.push({
                 $regex: name,
                 $options: 'i',
-            };
+            });
         }
+        if (key1) {
+            nameQuery.push({
+                $regex: key1,
+                $options: 'i',
+            });
+        }
+        if (key2) {
+            nameQuery.push({
+                $regex: key2,
+                $options: 'i',
+            });
+        }
+        query.name = { $and: nameQuery };
         if (gender === -2) {
             query.gender = null;
         } else if (gender && gender >= 0) {
