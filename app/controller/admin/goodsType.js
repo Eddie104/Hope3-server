@@ -103,6 +103,7 @@ class GoodsTypeController extends Controller {
         const total = await this.ctx.model.GoodsType.count(query);
         // 带上分类和子分类的数据
         const categoryArr = await this.ctx.model.Category.find();
+        const subCategoryArr = await this.ctx.model.SubCategory.find();
         // 找出品牌数据
         const brands = await this.ctx.model.Brand.find();
         this.success({
@@ -114,6 +115,7 @@ class GoodsTypeController extends Controller {
                 },
             },
             category: categoryArr,
+            subCategory: subCategoryArr,
             brands,
         });
     }
