@@ -347,13 +347,13 @@ class GoodsTypeController extends Controller {
         if (goodsType) {
             const goodsColor = await this.ctx.model.GoodsColor.findOne({ _id: goods_color_id }, { goods_id_arr: 1 });
             if (goodsColor) {
-                if (goodsColor.goods_id_arr.length < 1) {
-                    await this.ctx.model.GoodsColor.remove({ _id: goods_color_id });
-                    await this.ctx.model.GoodsType.update({ $pull: { goods_color_arr: goods_color_id } });
-                    this.success();
-                } else {
-                    this.fail(`_id为${goods_color_id}的配色还有商品数据，不能删除!`);
-                }
+                // if (goodsColor.goods_id_arr.length < 1) {
+                await this.ctx.model.GoodsColor.remove({ _id: goods_color_id });
+                await this.ctx.model.GoodsType.update({ $pull: { goods_color_arr: goods_color_id } });
+                this.success();
+                // } else {
+                //     this.fail(`_id为${goods_color_id}的配色还有商品数据，不能删除!`);
+                // }
             } else {
                 this.fail(`没有找到_id为${goods_color_id}的配色`);
             }
