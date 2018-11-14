@@ -8,6 +8,7 @@ class GoodsController extends Controller {
     async find() {
         let {
             name,
+            number,
             page,
             count,
         } = this.ctx.request.body;
@@ -21,6 +22,12 @@ class GoodsController extends Controller {
         if (name) {
             query.name = {
                 $regex: name,
+                $options: 'i',
+            };
+        }
+        if (number) {
+            query.number = {
+                $regex: number,
                 $options: 'i',
             };
         }
