@@ -61,6 +61,7 @@ class HomeController extends Controller {
         // }, { name: 1 });
         // this.success(goodsTypeArr);
 
+        /*
         // const goodsTypeArr = await this.ctx.model.GoodsType.find({ name: /^JORDAN AIR JORDAN/ }, { name: 1 });
         const goodsTypeArr = await this.ctx.model.GoodsType.find({
             name: {
@@ -77,6 +78,23 @@ class HomeController extends Controller {
                     name: goodsTypeArr[i].name.replace('WOMENS', 'WMNS').replace('WOMEN\'S', 'WMNS'),
                 },
             });
+        }
+        */
+        // let goods_color = null;
+        // const goodsArr = await this.ctx.model.Goods.find({}, { goods_color_id: 1 });
+        // for (let i = 0; i < goodsArr.length; i++) {
+        //     console.log(`${i + 1}/${goodsArr.length}`);
+        //     goods_color = await this.ctx.model.GoodsColor.findOne({ _id: goodsArr[i].goods_color_id }, { goods_type_id: 1 });
+        //     await this.ctx.model.Goods.update({ _id: goodsArr[i]._id }, { $set: { goods_type_id: goods_color.goods_type_id } });
+        // }
+        const goodsColorArr = await this.ctx.model.GoodsColor.find({}, { goods_id_arr: 1, goods_type_id: 1 });
+        for (let i = 0; i < goodsColorArr.length; i++) {
+            console.log(`${i + 1}/${goodsColorArr.length}`);
+            await this.ctx.model.Goods.update({
+                _id: { $in: goodsColorArr[i].goods_id_arr },
+            }, {
+                $set: { goods_type_id: goodsColorArr[i].goods_type_id },
+            }, { multi: true });
         }
         this.success();
     }

@@ -309,6 +309,9 @@ class GoodsTypeController extends Controller {
                     await this.ctx.model.GoodsColor.update({
                         _id: { $in: goodsType.goods_color_arr },
                     }, { $set: { goods_type_id: mergeTargetGoodsType } }, { multi: true });
+                    await this.ctx.model.Goods.update({
+                        goods_color_id: { $in: goodsType.goods_color_arr },
+                    }, { $set: { goods_type_id: mergeTargetGoodsType } }, { multi: true });
                     await this.ctx.model.GoodsType.update({ _id: goodsTypeArr[i] }, { $set: { is_deleted: true } });
                 }
             }
@@ -318,26 +321,26 @@ class GoodsTypeController extends Controller {
     }
 
     async unMerge() {
-        let {
-            mergeTargetGoodsType,
-            goodsTypeArr,
-        } = this.ctx.params;
-        goodsTypeArr = goodsTypeArr.split(',');
-        let goodsType = null;
-        for (let i = 0; i < goodsTypeArr.length; i++) {
-            goodsType = await this.ctx.model.GoodsType.findOne({ _id: goodsTypeArr[i], is_deleted: true }, { goods_color_arr: 1 });
-            if (goodsType) {
-                for (let j = 0; j < goodsType.goods_color_arr.length; j++) {
-                    await this.ctx.model.GoodsType.update({
-                        _id: mergeTargetGoodsType,
-                    }, { $pull: { goods_color_arr: goodsType.goods_color_arr[j] } });
-                }
-                await this.ctx.model.GoodsColor.update({
-                    _id: { $in: goodsType.goods_color_arr },
-                }, { $set: { goods_type_id: goodsTypeArr[i] } }, { multi: true });
-                await this.ctx.model.GoodsType.update({ _id: goodsTypeArr[i] }, { $set: { is_deleted: false } });
-            }
-        }
+        // let {
+        //     mergeTargetGoodsType,
+        //     goodsTypeArr,
+        // } = this.ctx.params;
+        // goodsTypeArr = goodsTypeArr.split(',');
+        // let goodsType = null;
+        // for (let i = 0; i < goodsTypeArr.length; i++) {
+        //     goodsType = await this.ctx.model.GoodsType.findOne({ _id: goodsTypeArr[i], is_deleted: true }, { goods_color_arr: 1 });
+        //     if (goodsType) {
+        //         for (let j = 0; j < goodsType.goods_color_arr.length; j++) {
+        //             await this.ctx.model.GoodsType.update({
+        //                 _id: mergeTargetGoodsType,
+        //             }, { $pull: { goods_color_arr: goodsType.goods_color_arr[j] } });
+        //         }
+        //         await this.ctx.model.GoodsColor.update({
+        //             _id: { $in: goodsType.goods_color_arr },
+        //         }, { $set: { goods_type_id: goodsTypeArr[i] } }, { multi: true });
+        //         await this.ctx.model.GoodsType.update({ _id: goodsTypeArr[i] }, { $set: { is_deleted: false } });
+        //     }
+        // }
         this.success();
     }
 
