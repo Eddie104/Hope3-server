@@ -20,5 +20,6 @@ module.exports = app => {
         update_counter: { type: Number, default: 0 },
         // 是否缺货了
         is_out_stock: { type: Boolean, default: false },
+        is_deleted: { type: Boolean, default: false },
     }, { collection: 'hope_goods' }));
 };

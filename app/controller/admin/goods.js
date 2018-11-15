@@ -18,7 +18,7 @@ class GoodsController extends Controller {
         //     page: 'number',
         //     count: 'number',
         // });
-        const query = {};
+        const query = { is_deleted: false };
         if (name) {
             query.name = {
                 $regex: name,
