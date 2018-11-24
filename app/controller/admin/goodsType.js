@@ -351,11 +351,13 @@ class GoodsTypeController extends Controller {
             const goodsColor = await this.ctx.model.GoodsColor.findOne({ _id: goods_color_id }, { goods_id_arr: 1 });
             if (goodsColor) {
                 // if (goodsColor.goods_id_arr.length < 1) {
-                await this.ctx.model.GoodsColor.remove({ _id: goods_color_id });
-                const goodsArr = await this.ctx.model.Goods.findAndUpdate({ _id: { $in: goodsColor.goods_id_arr } }, { $set: { is_deleted: true } });
+                // const goodsArr = await this.ctx.model.Goods.findOneAndUpdate({ _id: { $in: goodsColor.goods_id_arr } }, { $set: { is_deleted: true } });
+                await this.ctx.model.Goods.update({ _id: { $in: goodsColor.goods_id_arr } }, { $set: { is_deleted: true } }, { multi: true });
+                const goodsArr = await this.ctx.model.Goods.find({ _id: { $in: goodsColor.goods_id_arr } }, { url: 1 });
                 const urlArr = goodsArr.map(goods => goods.url);
                 await this.ctx.model.PendingGoods.update({ url: { $in: urlArr } }, { $set: { is_checked: false } }, { multi: true });
                 await this.ctx.model.GoodsType.update({ $pull: { goods_color_arr: goods_color_id } });
+                await this.ctx.model.GoodsColor.remove({ _id: goods_color_id });
                 this.success();
                 // } else {
                 //     this.fail(`_id为${goods_color_id}的配色还有商品数据，不能删除!`);

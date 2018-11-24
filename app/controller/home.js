@@ -98,6 +98,7 @@ class HomeController extends Controller {
             }, { multi: true });
         }
         */
+        /*
         const goodsArr = await this.ctx.model.Goods.find({}, { goods_color_id: 1, url: 1 });
         let goodsColor = null;
         for (let i = 0; i < goodsArr.length; i++) {
@@ -106,6 +107,31 @@ class HomeController extends Controller {
                 await this.ctx.model.Goods.update({ _id: goodsArr[i]._id }, { $set: { is_deleted: true } });
                 await this.ctx.model.PendingGoods.update({ url: goodsArr[i].url }, { $set: { is_checked: false } });
                 console.log(goodsArr[i].url);
+            }
+        }
+        */
+        const goodsColorIdArr = [
+            '5ad351c848555b1ba3210e30',
+            '5ad3598048555b1ba32126bf',
+            '5ad359ca48555b1ba3212e54',
+            '5ad359cb48555b1ba3212e8c',
+            '5ad359cd48555b1ba3212ec4',
+            '5ad359cf48555b1ba3212eff',
+            '5ad35a0b48555b1ba3213674',
+            '5ba46751a0af7a5a45dc3a75',
+            '5ba46c1ea0af7a5a45dc3c4f',
+            '5ba468b9a0af7a5a45dc3b2b',
+            '5ba46913a0af7a5a45dc3b41',
+            '5ba46914a0af7a5a45dc3b57',
+        ];
+        let goods = null;
+        for (let i = 0; i < goodsColorIdArr.length; i++) {
+            goods = await this.ctx.model.Goods.findOne({ goods_color_id: goodsColorIdArr[i] }, { url: 1 });
+            if (goods) {
+                await this.ctx.model.Goods.update({ _id: goods._id }, { $set: { is_deleted: true } });
+                await this.ctx.model.PendingGoods.update({ url: goods.url }, { $set: { is_checked: false } }, { multi: true });
+                await this.ctx.model.GoodsType.update({ $pull: { goods_color_arr: goodsColorIdArr[i] } });
+                console.log(goods.url);
             }
         }
         console.log('done');
