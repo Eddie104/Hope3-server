@@ -31,7 +31,6 @@ class GoodsController extends Controller {
                 $options: 'i',
             };
         }
-        console.log(query);
         const list = await this.ctx.model.Goods.find(query).skip((page - 1) * count).limit(count);
         // 带上款型
         const goodsTypeIdArr = list.map(goods => goods.goods_type_id);
