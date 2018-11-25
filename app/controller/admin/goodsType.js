@@ -355,6 +355,7 @@ class GoodsTypeController extends Controller {
                 await this.ctx.model.Goods.update({ _id: { $in: goodsColor.goods_id_arr } }, { $set: { is_deleted: true } }, { multi: true });
                 const goodsArr = await this.ctx.model.Goods.find({ _id: { $in: goodsColor.goods_id_arr } }, { url: 1 });
                 const urlArr = goodsArr.map(goods => goods.url);
+                this.ctx.logger.info('urlArr => ', urlArr);
                 await this.ctx.model.PendingGoods.update({ url: { $in: urlArr } }, { $set: { is_checked: false } }, { multi: true });
                 await this.ctx.model.GoodsType.update({ $pull: { goods_color_arr: goods_color_id } });
                 await this.ctx.model.GoodsColor.remove({ _id: goods_color_id });
