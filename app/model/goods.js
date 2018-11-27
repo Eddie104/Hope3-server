@@ -8,7 +8,7 @@ module.exports = app => {
         name: { type: String, required: true },
         url: { type: String, required: true, index: true },
         number: { type: String, default: [] },
-        sku: { type: [{ size: Number, price: Number, isInStock: Boolean }], default: [] },
+        sku: { type: [{ size: String, price: Number, isInStock: Boolean }], default: [] },
         update_sku_time: Date,
         img: { type: String, default: '' },
         platform_id: { type: mongoose.Schema.ObjectId, required: true },

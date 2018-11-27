@@ -136,6 +136,7 @@ class HomeController extends Controller {
             }
         }
         */
+        /*
         const goodsArr = await this.ctx.model.Goods.find({ goods_type_id: { $exists: false } }, { goods_color_id: 1 });
         let goodsColor = null;
         for (let i = 0; i < goodsArr.length; i++) {
@@ -147,8 +148,25 @@ class HomeController extends Controller {
                 console.log(goodsArr[i]._id);
             }
         }
+        */
+        const pendingGoods = await this.ctx.model.PendingGoods.find({
+            $or: [
+                {
+                    name: {
+                        $regex: 'nike',
+                        $options: 'i',
+                    },
+                },
+                {
+                    name: {
+                        $regex: 'air',
+                        $options: 'i',
+                    },
+                },
+            ],
+        }, { name: 1 });
         console.log('done');
-        this.success();
+        this.success(pendingGoods);
     }
 }
 
