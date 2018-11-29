@@ -14,5 +14,7 @@ module.exports = app => {
         goods_id_arr: { type: [ mongoose.Schema.ObjectId ], default: [] },
         goods_type_id: mongoose.Schema.ObjectId,
         is_popular: { type: Boolean, default: false },
+        hot: { type: [ mongoose.Schema.ObjectId ], default: [] },
+        hot_degree: { type: Number, default: 0 },
     }, { collection: 'hope_goodscolors' }));
 };

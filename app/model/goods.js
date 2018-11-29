@@ -7,7 +7,7 @@ module.exports = app => {
         id: { type: Number, required: true, index: true },
         name: { type: String, required: true },
         url: { type: String, required: true, index: true },
-        number: { type: String, default: [] },
+        number: { type: String, default: '' },
         sku: { type: [{ size: String, price: Number, isInStock: Boolean }], default: [] },
         update_sku_time: Date,
         img: { type: String, default: '' },

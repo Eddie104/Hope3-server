@@ -67,7 +67,7 @@ class GoodsController extends Controller {
         } = this.ctx.request.body;
         const data = {
             sku,
-            number,
+            number: this.ctx.helper.formatGoodsNumber(number),
             name,
         };
         if (this.ctx.helper.isObjectId(platform_id)) data.platform_id = platform_id;
