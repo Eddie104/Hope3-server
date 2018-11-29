@@ -99,7 +99,10 @@ class GoodsTypeController extends Controller {
         } else if (series && series !== -1) {
             query.series = series;
         }
-        const list = await this.ctx.model.GoodsType.find(query, fields || {}).skip((page - 1) * count).limit(count);
+        const list = await this.ctx.model.GoodsType.find(query, fields || {})
+            .skip((page - 1) * count)
+            .limit(count)
+            .sort({ is_hot: -1 });
         const total = await this.ctx.model.GoodsType.count(query);
         // 带上分类和子分类的数据
         const categoryArr = await this.ctx.model.Category.find();

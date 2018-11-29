@@ -40,7 +40,10 @@ class PendingGoodsController extends Controller {
         } else if (is_deleted === 2) {
             query.is_deleted = false;
         }
-        const list = await this.ctx.model.PendingGoods.find(query).skip((page - 1) * count).limit(count);
+        const list = await this.ctx.model.PendingGoods.find(query)
+            .skip((page - 1) * count)
+            .limit(count)
+            .sort({ priority: -1 });
         const total = await this.ctx.model.PendingGoods.count(query);
         // 找出平台
         const platformList = await this.ctx.model.Platform.find();
