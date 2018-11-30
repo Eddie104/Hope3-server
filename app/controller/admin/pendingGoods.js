@@ -40,7 +40,10 @@ class PendingGoodsController extends Controller {
         } else if (is_deleted === 2) {
             query.is_deleted = false;
         }
-        const list = await this.ctx.model.PendingGoods.find(query).skip((page - 1) * count).limit(count);
+        const list = await this.ctx.model.PendingGoods.find(query)
+            .skip((page - 1) * count)
+            .limit(count)
+            .sort({ priority: -1 });
         const total = await this.ctx.model.PendingGoods.count(query);
         // 找出平台
         const platformList = await this.ctx.model.Platform.find();
@@ -105,7 +108,7 @@ class PendingGoodsController extends Controller {
                     id,
                     name: pendingGoods.name,
                     url: pendingGoods.url,
-                    number: pendingGoods.number,
+                    number: this.ctx.helper.formatGoodsNumber(pendingGoods.number),
                     sku: pendingGoods.size_price_arr,
                     img,
                     platform_id: pendingGoods.platform_id,
@@ -120,7 +123,7 @@ class PendingGoodsController extends Controller {
                     id,
                     color_name: pendingGoods.color_name,
                     color_value: pendingGoods.color_value,
-                    number: pendingGoods.number,
+                    number: this.ctx.helper.formatGoodsNumber(pendingGoods.number),
                     img,
                     goods_id_arr: [ goods._id ],
                     goods_type_id: goodsType._id,
@@ -512,7 +515,7 @@ class PendingGoodsController extends Controller {
                             id,
                             name: pendingGoods.name,
                             url: pendingGoods.url,
-                            number: pendingGoods.number,
+                            number: this.ctx.helper.formatGoodsNumber(pendingGoods.number),
                             sku: pendingGoods.size_price_arr,
                             img: Array.isArray(pendingGoods.imgs) && pendingGoods.imgs.length > 0 ? `${pendingGoods.platform}/${pendingGoods.imgs[0]}` : '',
                             platform_id: pendingGoods.platform_id,

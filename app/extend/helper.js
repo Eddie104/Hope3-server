@@ -199,4 +199,15 @@ module.exports = {
         }
         return false;
     },
+
+    // 格式化商品的number
+    formatGoodsNumber(number) {
+        if (/\w{6}[\s\-]?\w{3}/.test(number)) {
+            number = number.replace(' ', '-').toLocaleUpperCase();
+            if (number.length === 9) {
+                number = number.substr(0, 6) + '-' + number.substr(6);
+            }
+        }
+        return number;
+    },
 };

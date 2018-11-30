@@ -15,5 +15,6 @@ module.exports = app => {
         series: mongoose.Schema.ObjectId,
         img: { type: String, default: '' },
         is_deleted: { type: Boolean, default: false },
+        is_hot: { type: Boolean, default: false },
     }, { collection: 'hope_goodstypes' }));
 };

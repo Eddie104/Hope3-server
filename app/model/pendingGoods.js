@@ -27,5 +27,7 @@ module.exports = app => {
         update_counter: { type: Number, default: 0 },
         // 是否缺货了
         is_out_stock: { type: Boolean, default: false },
+        // 是否优先处理的，值越大，越优先处理
+        priority: { type: Number, default: 0, index: true },
     }, { collection: 'hope_pendinggoods' }));
 };

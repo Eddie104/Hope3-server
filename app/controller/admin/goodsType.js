@@ -99,7 +99,10 @@ class GoodsTypeController extends Controller {
         } else if (series && series !== -1) {
             query.series = series;
         }
-        const list = await this.ctx.model.GoodsType.find(query, fields || {}).skip((page - 1) * count).limit(count);
+        const list = await this.ctx.model.GoodsType.find(query, fields || {})
+            .skip((page - 1) * count)
+            .limit(count)
+            .sort({ is_hot: -1 });
         const total = await this.ctx.model.GoodsType.count(query);
         // 带上分类和子分类的数据
         const categoryArr = await this.ctx.model.Category.find();
@@ -179,7 +182,7 @@ class GoodsTypeController extends Controller {
                 id,
                 name,
                 url,
-                number,
+                number: this.ctx.helper.formatGoodsNumber(number),
                 sku: size_price_arr,
                 img: Array.isArray(imgs) && imgs.length > 0 ? `${platform}/${imgs[0]}` : '',
                 platform_id,
@@ -201,7 +204,7 @@ class GoodsTypeController extends Controller {
                     id,
                     color_name: color_name || '',
                     color_value: color_value || '',
-                    number: [ number ],
+                    number: [ this.ctx.helper.formatGoodsNumber(number) ],
                     img: Array.isArray(imgs) && imgs.length > 0 ? `${platform}/${imgs[0]}` : '',
                     goods_id_arr: [ goods._id ],
                     // 配色和款型关联上
@@ -249,7 +252,7 @@ class GoodsTypeController extends Controller {
                 id,
                 name,
                 url,
-                number,
+                number: this.ctx.helper.formatGoodsNumber(number),
                 sku: size_price_arr,
                 img: Array.isArray(imgs) && imgs.length > 0 ? `${platform}/${imgs[0]}` : '',
                 platform_id,
@@ -263,7 +266,7 @@ class GoodsTypeController extends Controller {
                 id,
                 color_name: color_name || '',
                 color_value: color_value || '',
-                number: [ number ],
+                number: [ this.ctx.helper.formatGoodsNumber(number) ],
                 img: Array.isArray(imgs) && imgs.length > 0 ? `${platform}/${imgs[0]}` : '',
                 goods_id_arr: [ goods._id ],
             });

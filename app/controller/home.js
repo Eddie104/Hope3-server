@@ -149,6 +149,7 @@ class HomeController extends Controller {
             }
         }
         */
+        /*
         const pendingGoods = await this.ctx.model.PendingGoods.find({
             $or: [
                 {
@@ -165,8 +166,39 @@ class HomeController extends Controller {
                 },
             ],
         }, { name: 1 });
+        */
+        const goodsArr = await this.ctx.model.Goods.find({}, { number: 1 });
+        const l = goodsArr.length;
+        let newNumber = null;
+        for (let i = 0; i < l; i++) {
+            console.log(`${i}/${l}`);
+            newNumber = this.ctx.helper.formatGoodsNumber(goodsArr[i].number);
+            if (newNumber !== goodsArr[i].number) {
+                await this.ctx.model.Goods.update({ _id: goodsArr[i]._id }, {
+                    $set: {
+                        number: newNumber,
+                    },
+                });
+            }
+        }
+        // const goodsColorArr = await this.ctx.model.GoodsColor.find({}, { number: 1 });
+        // const l = goodsColorArr.length;
+        // let newNumber = null;
+        // for (let i = 0; i < l; i++) {
+        //     console.log(`${i}/${l}`);
+        //     newNumber = goodsColorArr[i].number;
+        //     for (let j = 0; j < newNumber.length; j++) {
+        //         newNumber[j] = this.ctx.helper.formatGoodsNumber(newNumber[j]);
+        //     }
+        //     newNumber = this.ctx.helper.unique(newNumber);
+        //     await this.ctx.model.GoodsColor.update({ _id: goodsColorArr[i]._id }, {
+        //         $set: {
+        //             number: newNumber,
+        //         },
+        //     });
+        // }
         console.log('done');
-        this.success(pendingGoods);
+        this.success();
     }
 }
 

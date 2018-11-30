@@ -19,7 +19,7 @@ class Spider extends Subscription {
             cronOptions: { tz: 'Asia/Shanghai' },
             type: 'worker',
             immediate: false,
-            disable: false,
+            disable: true,
         };
     }
 
