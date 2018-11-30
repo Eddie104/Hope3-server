@@ -140,6 +140,7 @@ class PendingGoodsController extends Controller {
     }
 
     async autoConnectByNumber() {
+        /*
         const keywords = [
             'CORTEZ KENNY',
             'PG',
@@ -213,7 +214,7 @@ class PendingGoodsController extends Controller {
             'SWOOPES',
             'Sequent',
             'Manoadome',
-            'Benassi ',
+            'Benassi',
             'Trey 5',
             'VORTAK',
             'ASSERSION',
@@ -222,7 +223,7 @@ class PendingGoodsController extends Controller {
             'FL-Rue',
             'Metcon',
             'Gravity',
-            'Humara ',
+            'Humara',
             'LunarStelos',
             'LunarSolo',
             'Untouchable',
@@ -270,7 +271,7 @@ class PendingGoodsController extends Controller {
             'Vapor Shark',
             'Mamba',
             'Pocketknife',
-            'SB Janoski ',
+            'SB Janoski',
             'Metcon DSX',
             'Zoom',
             'SB Portmore',
@@ -287,7 +288,7 @@ class PendingGoodsController extends Controller {
             'TRAINER 5',
             'Sequent',
             'Fingertrap',
-            'Explorer ',
+            'Explorer',
             'Downtown',
             'Goaterra',
             'Rival',
@@ -310,7 +311,7 @@ class PendingGoodsController extends Controller {
             'Hoodland',
             'Virtue',
             'Rotational',
-            'Zoom SD ',
+            'Zoom SD',
             'SPAN',
             'Span 2',
             'Kynwood',
@@ -324,7 +325,7 @@ class PendingGoodsController extends Controller {
             'AUDACITY',
             'Current',
             'ROSHE NM',
-            'HYPERQUICKNESS ',
+            'HYPERQUICKNESS',
             'UNAR CALDRA',
             'KOTH ULTRA',
             'VEER',
@@ -365,19 +366,19 @@ class PendingGoodsController extends Controller {
             'Vortak',
             'Jester',
             'Huarache City',
-            'Ashin Modern ',
+            'Ashin Modern',
             'BLAZER MID',
             'City Loop',
             'Dualtone',
             'Epic React',
             'Flex Experience',
-            'Legend React ',
-            'Lunar Charge ',
-            'Renew Rival ',
-            'Revolution 4 ',
-            'Shox Gravity ',
+            'Legend React',
+            'Lunar Charge',
+            'Renew Rival',
+            'Revolution 4',
+            'Shox Gravity',
             'Zoom Fly',
-            'FOOTSCAPE WOVEN ',
+            'FOOTSCAPE WOVEN',
             'TECH CHALLENGE',
             'AJF',
             'Flight Lite',
@@ -407,7 +408,7 @@ class PendingGoodsController extends Controller {
             'GAME 7',
             'Harbor',
             'Carnivore',
-            'Huarache Free ',
+            'Huarache Free',
             'Hyper Dunk',
             'Hyperfuse',
             'Hyperize',
@@ -428,7 +429,7 @@ class PendingGoodsController extends Controller {
             'Marxma',
             'Match Supreme',
             'Proximo',
-            'MATCH CLASSIC ',
+            'MATCH CLASSIC',
             'Skystepper',
             'Nighttrack',
             'KYNSI JCRD',
@@ -449,6 +450,11 @@ class PendingGoodsController extends Controller {
             'j23',
             'REIMAGINED',
             'Flare AJ1',
+        ];
+        */
+        const keywords = [
+            'Jordan',
+            'nike',
         ];
         const or = keywords.map(kw => {
             return {
@@ -481,62 +487,68 @@ class PendingGoodsController extends Controller {
             console.log(`${i}/${pendingGoodsArr.length}`);
             pendingGoods = pendingGoodsArr[i];
             pendingGoodsNumber = pendingGoods.number;
-            if (pendingGoodsNumber.indexOf(' ') !== -1) {
-                pendingGoodsNumber = pendingGoodsNumber.split(' ')[0];
-            } else if (pendingGoodsNumber.indexOf('-') !== -1) {
-                pendingGoodsNumber = pendingGoodsNumber.split('-')[0];
-            } else {
-                // 如果最后一位不是数字的话，就去掉最后的四位
-                const lastChar = pendingGoodsNumber.substr(pendingGoodsNumber.length - 1, 1);
-                if (isNaN(lastChar)) {
-                    // 去掉最后的四位
-                    pendingGoodsNumber = pendingGoodsNumber.substring(0, pendingGoodsNumber.length - 4);
+            if (pendingGoodsNumber) {
+                if (pendingGoodsNumber.indexOf(' ') !== -1) {
+                    pendingGoodsNumber = pendingGoodsNumber.split(' ')[0];
+                } else if (pendingGoodsNumber.indexOf('-') !== -1) {
+                    pendingGoodsNumber = pendingGoodsNumber.split('-')[0];
                 } else {
-                    // 去掉最后的三位
-                    pendingGoodsNumber = pendingGoodsNumber.substring(0, pendingGoodsNumber.length - 3);
-                }
-            }
-            goodsColorArr = await this.ctx.model.GoodsColor.find({
-                number: {
-                    $regex: pendingGoodsNumber,
-                    $options: 'i',
-                },
-            }, { goods_type_id: 1 });
-            if (goodsColorArr && goodsColorArr.length > 0) {
-                // const goodsTypeIdArr = [ ...new Set(goodsColorArr.map(item => item.goods_type_id)) ];
-                for (let j = 0; j < goodsColorArr.length; j++) {
-                    goodsColor = goodsColorArr[j];
-                    goodsType = await this.ctx.model.GoodsType.findOne({ _id: goodsColor.goods_type_id, is_deleted: false });
-                    if (goodsType) {
-                        // 新建商品
-                        const id = await this.ctx.service.createId.getId('Goods');
-                        crawlCount = await this.ctx.model.IdentityCounter.findOne({ model: `${pendingGoods.platform}CrawlCounter` }, { count: 1 });
-                        const goods = new this.ctx.model.Goods({
-                            id,
-                            name: pendingGoods.name,
-                            url: pendingGoods.url,
-                            number: this.ctx.helper.formatGoodsNumber(pendingGoods.number),
-                            sku: pendingGoods.size_price_arr,
-                            img: Array.isArray(pendingGoods.imgs) && pendingGoods.imgs.length > 0 ? `${pendingGoods.platform}/${pendingGoods.imgs[0]}` : '',
-                            platform_id: pendingGoods.platform_id,
-                            gender: pendingGoods.gender,
-                            goods_type_id: goodsType._id,
-                            update_counter: crawlCount ? crawlCount.count : 0,
-                        });
-                        await goods.save();
-
-                        // 配色和款型关联上
-                        await this.ctx.model.GoodsColor.update({
-                            _id: goodsColor._id,
-                        }, { $addToSet: { goods_id_arr: goods._id } });
-
-                        // 把商品和配色关联上
-                        await this.ctx.model.Goods.update({ _id: goods._id }, { $set: { goods_color_id: goodsColor._id } });
-                        await this.ctx.model.PendingGoods.update({ _id: pendingGoods._id }, { $set: { is_checked: true } });
-                        await this.ctx.model.GoodsType.update({ _id: goodsType._id }, { $addToSet: { goods_color_arr: goodsColor._id } });
-                        break;
+                    // 如果最后一位不是数字的话，就去掉最后的四位
+                    const lastChar = pendingGoodsNumber.substr(pendingGoodsNumber.length - 1, 1);
+                    if (isNaN(lastChar)) {
+                        // 去掉最后的四位
+                        pendingGoodsNumber = pendingGoodsNumber.substring(0, pendingGoodsNumber.length - 4);
+                    } else {
+                        // 去掉最后的三位
+                        pendingGoodsNumber = pendingGoodsNumber.substring(0, pendingGoodsNumber.length - 3);
                     }
                 }
+                goodsColorArr = await this.ctx.model.GoodsColor.find({
+                    number: {
+                        $regex: pendingGoodsNumber,
+                        $options: 'i',
+                    },
+                }, { goods_type_id: 1 });
+                if (goodsColorArr && goodsColorArr.length > 0) {
+                    // const goodsTypeIdArr = [ ...new Set(goodsColorArr.map(item => item.goods_type_id)) ];
+                    for (let j = 0; j < goodsColorArr.length; j++) {
+                        goodsColor = goodsColorArr[j];
+                        goodsType = await this.ctx.model.GoodsType.findOne({ _id: goodsColor.goods_type_id, is_deleted: false });
+                        if (goodsType) {
+                            // 新建商品
+                            const id = await this.ctx.service.createId.getId('Goods');
+                            crawlCount = await this.ctx.model.IdentityCounter.findOne({ model: `${pendingGoods.platform}CrawlCounter` }, { count: 1 });
+                            const goods = new this.ctx.model.Goods({
+                                id,
+                                name: pendingGoods.name,
+                                url: pendingGoods.url,
+                                number: this.ctx.helper.formatGoodsNumber(pendingGoods.number),
+                                sku: pendingGoods.size_price_arr,
+                                img: Array.isArray(pendingGoods.imgs) && pendingGoods.imgs.length > 0 ? `${pendingGoods.platform}/${pendingGoods.imgs[0]}` : '',
+                                platform_id: pendingGoods.platform_id,
+                                gender: pendingGoods.gender,
+                                goods_type_id: goodsType._id,
+                                update_counter: crawlCount ? crawlCount.count : 0,
+                            });
+                            await goods.save();
+
+                            // 配色和款型关联上
+                            await this.ctx.model.GoodsColor.update({
+                                _id: goodsColor._id,
+                            }, { $addToSet: { goods_id_arr: goods._id } });
+
+                            // 把商品和配色关联上
+                            await this.ctx.model.Goods.update({ _id: goods._id }, { $set: { goods_color_id: goodsColor._id } });
+                            await this.ctx.model.PendingGoods.update({ _id: pendingGoods._id }, { $set: { is_checked: true } });
+                            await this.ctx.model.GoodsType.update({ _id: goodsType._id }, { $addToSet: { goods_color_arr: goodsColor._id } });
+                            break;
+                        }
+                    }
+                }
+            } else {
+                console.log('======');
+                console.log(pendingGoods);
+                console.log('======');
             }
         }
         this.success();
