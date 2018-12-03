@@ -8,23 +8,23 @@ class HomeController extends Controller {
     }
 
     async test() {
-        // const goodsArr = await this.ctx.model.Goods.find({
-        //     goods_type_id: { $exists: false },
-        // }, { goods_color_id: 1 });
-        // let goodsColor = null;
-        // for (let i = 0; i < goodsArr.length; i++) {
-        //     goodsColor = await this.ctx.model.GoodsColor.findOne({ _id: goodsArr[i].goods_color_id }, { goods_type_id: 1 });
-        //     if (goodsColor) {
-        //         await this.ctx.model.Goods.update({
-        //             _id: goodsArr[i]._id,
-        //         }, {
-        //             $set: {
-        //                 goods_type_id: goodsColor.goods_type_id,
-        //             },
-        //         });
-        //         console.log(`${i}/${goodsArr.length}`);
-        //     }
-        // }
+        const goodsArr = await this.ctx.model.Goods.find({
+            goods_type_id: { $exists: false },
+        }, { goods_color_id: 1 });
+        let goodsColor = null;
+        for (let i = 0; i < goodsArr.length; i++) {
+            goodsColor = await this.ctx.model.GoodsColor.findOne({ _id: goodsArr[i].goods_color_id }, { goods_type_id: 1 });
+            if (goodsColor) {
+                await this.ctx.model.Goods.update({
+                    _id: goodsArr[i]._id,
+                }, {
+                    $set: {
+                        goods_type_id: goodsColor.goods_type_id,
+                    },
+                });
+                console.log(`${i}/${goodsArr.length}`);
+            }
+        }
 
         // const goodsTypeArr = await this.ctx.model.GoodsType.find({ is_deleted: false }, { goods_color_arr: 1 });
         // for (let i = 0; i < goodsTypeArr.length; i++) {
@@ -167,6 +167,7 @@ class HomeController extends Controller {
             ],
         }, { name: 1 });
         */
+        /*
         const goodsArr = await this.ctx.model.Goods.find({}, { number: 1 });
         const l = goodsArr.length;
         let newNumber = null;
@@ -181,6 +182,7 @@ class HomeController extends Controller {
                 });
             }
         }
+        */
         // const goodsColorArr = await this.ctx.model.GoodsColor.find({}, { number: 1 });
         // const l = goodsColorArr.length;
         // let newNumber = null;

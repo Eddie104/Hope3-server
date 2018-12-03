@@ -187,7 +187,7 @@ class GoodsTypeController extends Controller {
                 img: Array.isArray(imgs) && imgs.length > 0 ? `${platform}/${imgs[0]}` : '',
                 platform_id,
                 gender,
-                goods_color_id: goodsType._id,
+                goods_type_id: goodsType._id,
                 update_counter: crawlCount ? crawlCount.count : 0,
             });
             await goods.save();
@@ -257,6 +257,7 @@ class GoodsTypeController extends Controller {
                 img: Array.isArray(imgs) && imgs.length > 0 ? `${platform}/${imgs[0]}` : '',
                 platform_id,
                 gender,
+                goods_type_id: goodsType._id,
                 update_counter: crawlCount ? crawlCount.count : 0,
             });
             await goods.save();
