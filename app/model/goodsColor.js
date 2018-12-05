@@ -5,6 +5,7 @@ module.exports = app => {
      */
     return mongoose.model('GoodsColor', new mongoose.Schema({
         id: { type: Number, required: true, index: true },
+        name: { type: String, required: true },
         color_name: { type: String, default: '' },
         color_value: { type: String, default: '' },
         // 颜色类型

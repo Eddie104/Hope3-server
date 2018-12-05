@@ -9,9 +9,21 @@ module.exports = app => {
     // PUT     /posts/:id	    post	app.controllers.posts.update
     // DELETE  /posts/:id	    post	app.controllers.posts.destroy
     // app
-    router.resources('goodsType', '/api/app/goodsType', controller.app.goodsType);
-
     router.resources('series', '/api/app/series', controller.app.series);
 
     router.get('/api/app/series/top/:count', controller.app.series.top);
+
+    // ----------- goodsType --------------
+
+    router.resources('goodsType', '/api/app/goodsType', controller.app.goodsType);
+
+    // ----------- goodsColor --------------
+
+    router.resources('goodsColor', '/api/app/goodsColor', controller.app.goodsColor);
+
+    router.get('/api/app/goodsColor/top/:count', controller.app.goodsColor.top);
+
+    // ----------- goods --------------
+
+    router.resources('goods', '/api/app/goods', controller.app.goods);
 };

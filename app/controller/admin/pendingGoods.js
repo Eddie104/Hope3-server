@@ -121,6 +121,7 @@ class PendingGoodsController extends Controller {
                 id = await this.ctx.service.createId.getId('GoodsColor');
                 goodsColor = new this.ctx.model.GoodsColor({
                     id,
+                    name: goodsType.name,
                     color_name: pendingGoods.color_name,
                     color_value: pendingGoods.color_value,
                     number: this.ctx.helper.formatGoodsNumber(pendingGoods.number),

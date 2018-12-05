@@ -173,7 +173,7 @@ class GoodsTypeController extends Controller {
             goods_type_id,
             gender,
         } = this.ctx.request.body;
-        const goodsType = await this.ctx.model.GoodsType.findOne({ _id: goods_type_id, is_deleted: false }, { goods_color_arr: 1 });
+        const goodsType = await this.ctx.model.GoodsType.findOne({ _id: goods_type_id, is_deleted: false }, { goods_color_arr: 1, name: 1, });
         if (goodsType) {
             // 新建商品
             let id = await this.ctx.service.createId.getId('Goods');
@@ -202,6 +202,7 @@ class GoodsTypeController extends Controller {
                 id = await this.ctx.service.createId.getId('GoodsColor');
                 goodsColor = new this.ctx.model.GoodsColor({
                     id,
+                    name: goodsType.name,
                     color_name: color_name || '',
                     color_value: color_value || '',
                     number: [ this.ctx.helper.formatGoodsNumber(number) ],
@@ -264,6 +265,7 @@ class GoodsTypeController extends Controller {
             id = await this.ctx.service.createId.getId('GoodsColor');
             const goodsColor = new this.ctx.model.GoodsColor({
                 id,
+                name: 'nil',
                 color_name: color_name || '',
                 color_value: color_value || '',
                 number: [ this.ctx.helper.formatGoodsNumber(number) ],
@@ -286,7 +288,7 @@ class GoodsTypeController extends Controller {
             goodsType = new this.ctx.model.GoodsType(data);
             await goodsType.save();
             // 把配色和款型关联上
-            await this.ctx.model.GoodsColor.update({ _id: goodsColor._id }, { $set: { goods_type_id: goodsType._id } });
+            await this.ctx.model.GoodsColor.update({ _id: goodsColor._id }, { $set: { goods_type_id: goodsType._id, name: goodsType.name } });
             await this.ctx.model.Goods.update({ _id: goods._id }, { $set: { goods_type_id: goodsType._id } });
             this.success();
         } else {

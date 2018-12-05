@@ -8,6 +8,7 @@ class HomeController extends Controller {
     }
 
     async test() {
+        /*
         const goodsArr = await this.ctx.model.Goods.find({
             goods_type_id: { $exists: false },
         }, { goods_color_id: 1 });
@@ -23,6 +24,19 @@ class HomeController extends Controller {
                     },
                 });
                 console.log(`${i}/${goodsArr.length}`);
+            }
+        }
+        */
+
+        const goodsColorArr = await this.ctx.model.GoodsColor.find({}, { goods_type_id: 1 });
+        let goodsType;
+        for (let index = 0; index < goodsColorArr.length; index++) {
+            console.log(`${index}/${goodsColorArr.length}`);
+            goodsType = await this.ctx.model.GoodsType.findOne({ _id: goodsColorArr[index].goods_type_id }, { name: 1 });
+            if (goodsType) {
+                await this.ctx.model.GoodsColor.update({ _id: goodsColorArr[index]._id }, { $set: { name: goodsType.name } });
+            } else {
+                console.log(goodsColorArr[index]);
             }
         }
 
