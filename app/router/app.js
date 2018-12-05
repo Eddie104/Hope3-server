@@ -13,5 +13,5 @@ module.exports = app => {
 
     router.resources('series', '/api/app/series', controller.app.series);
 
-    router.get('/api/app/top_series', controller.app.series.topSeries);
+    router.get('/api/app/series/top', controller.app.series.top);
 };
