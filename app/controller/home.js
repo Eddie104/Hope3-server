@@ -590,6 +590,10 @@ class HomeController extends Controller {
                 }
             }
 
+            if (pendingGoodsNumber.length !== 6) {
+                console.log(`${pendingGoodsNumber} 的长度不为6，跳过!`);
+                continue;
+            }
             goodsColorArr = await this.ctx.model.GoodsColor.find({
                 number: {
                     $regex: pendingGoodsNumber,
@@ -606,7 +610,13 @@ class HomeController extends Controller {
                         continue;
                     }
                     goodsTypeIdArr.push(goodsTypeId);
-                    goodsType = await this.ctx.model.GoodsType.findOne({ _id: goodsColor.goods_type_id, is_deleted: false });
+                    goodsType = await this.ctx.model.GoodsType.findOne({
+                        _id: goodsColor.goods_type_id,
+                        is_deleted: false,
+                        brand: {
+                            $in: [ '5aa4f40e30302f3bc95cea7c', '5aba668eee851c35fa151186' ],
+                        },
+                    });
                     if (goodsType) {
                         const img = Array.isArray(pendingGoods.imgs) && pendingGoods.imgs.length > 0 ? `${pendingGoods.platform}/${pendingGoods.imgs[0]}` : '';
                         // 新建商品
