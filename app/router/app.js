@@ -13,6 +13,9 @@ module.exports = app => {
 
     router.get('/api/app/series/top/:count', controller.app.series.top);
 
+    // ----------- home --------------
+    router.get('/api/app/home/:seriesCount/:popularGoodsColorCount/:recommendGoodsColorCount', controller.app.home.index);
+
     // ----------- goodsType --------------
 
     router.resources('goodsType', '/api/app/goodsType', controller.app.goodsType);

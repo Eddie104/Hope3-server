@@ -91,6 +91,8 @@ module.exports = app => {
 
     router.get('/api/admin/find_popular/:page/:count', app.oAuth2Server.authenticate(), controller.admin.goodsColor.findPopular);
 
+    router.get('/api/admin/find_recommend/:page/:count', app.oAuth2Server.authenticate(), controller.admin.goodsColor.findRecommend);
+
     router.get('/api/admin/remove_goods/:_id/:goods_id', app.oAuth2Server.authenticate(), controller.admin.goodsColor.removeGoods);
 
     // 商品相关

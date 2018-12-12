@@ -15,6 +15,8 @@ module.exports = app => {
         goods_id_arr: { type: [ mongoose.Schema.ObjectId ], default: [] },
         goods_type_id: mongoose.Schema.ObjectId,
         is_popular: { type: Boolean, default: false },
+        // 是不是推荐的
+        is_recommend: { type: Boolean, default: false },
         // 在哪些平台上是热度商品
         hot: { type: [ mongoose.Schema.ObjectId ], default: [] },
         // 热度值，在多少个平台上是热度商品，热度值就是多少

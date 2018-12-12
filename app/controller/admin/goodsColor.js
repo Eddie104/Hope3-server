@@ -24,6 +24,25 @@ class GoodsColorController extends Controller {
         });
     }
 
+    async findRecommend() {
+        let { page, count } = this.ctx.params;
+        page = this.ctx.helper.toInt(page, 1);
+        count = this.ctx.helper.toInt(count, 10);
+        const query = {
+            is_recommend: true,
+        };
+        const goodsColorArr = await this.ctx.model.GoodsColor.find(query)
+            .skip((page - 1) * count).limit(count);
+        const total = await this.ctx.model.GoodsColor.count(query);
+        this.success({
+            list: goodsColorArr,
+            pagination: {
+                total,
+                current: page,
+            },
+        });
+    }
+
     async detail() {
         let { _id, page, count } = this.ctx.request.body;
         const goodsColor = await this.ctx.model.GoodsColor.findOne({ _id });
