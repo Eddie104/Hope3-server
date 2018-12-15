@@ -10,6 +10,7 @@ class PendingGoodsController extends Controller {
     async find() {
         let {
             name,
+            number,
             platform,
             only_pending,
             is_deleted,
@@ -26,6 +27,12 @@ class PendingGoodsController extends Controller {
         if (name) {
             query.name = {
                 $regex: name,
+                $options: 'i',
+            };
+        }
+        if (number) {
+            query.number = {
+                $regex: number,
                 $options: 'i',
             };
         }
