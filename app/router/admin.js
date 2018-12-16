@@ -50,7 +50,7 @@ module.exports = app => {
     // 待处理商品相关
     router.post('/api/admin/find_pending_goods', app.oAuth2Server.authenticate(), controller.admin.pendingGoods.find);
 
-    router.get('/api/admin/set_pending_goods_check/:_id', app.oAuth2Server.authenticate(), controller.admin.pendingGoods.setCheck);
+    router.post('/api/admin/set_pending_goods_check', app.oAuth2Server.authenticate(), controller.admin.pendingGoods.setCheck);
 
     router.get('/api/admin/delete_pending_goods/:_id', app.oAuth2Server.authenticate(), controller.admin.pendingGoods.delete);
 
