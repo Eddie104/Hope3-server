@@ -74,9 +74,8 @@ class PendingGoodsController extends Controller {
     }
 
     async setCheck() {
-        // const { _id } = this.ctx.params;
         const { idArr } = this.ctx.request.body;
-        await this.ctx.model.PendingGoods.update({ _id: idArr }, { $set: { is_checked: true } }, { multi: true });
+        await this.ctx.model.PendingGoods.update({ _id: { $in: idArr } }, { $set: { is_checked: true } }, { multi: true });
         this.success();
     }
 
