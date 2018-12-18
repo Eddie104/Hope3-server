@@ -20,11 +20,15 @@ module.exports = app => {
 
     router.resources('goodsType', '/api/app/goodsType', controller.app.goodsType);
 
+    // router.get('/api/app/goodsType/show/:goodsColorId', controller.app.goodsType.showByGoodsColor);
+
     // ----------- goodsColor --------------
 
     router.resources('goodsColor', '/api/app/goodsColor', controller.app.goodsColor);
 
     router.get('/api/app/goodsColor/top/:count', controller.app.goodsColor.top);
+
+    router.get('/api/app/goodsColor/recommend/:page/:pageSize', controller.app.goodsColor.recommend);
 
     // ----------- goods --------------
 

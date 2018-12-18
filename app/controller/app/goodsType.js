@@ -11,9 +11,55 @@ class GoodsTypeController extends Controller {
 
     async show() {
         const { id } = this.ctx.params;
-        const goodsType = await this.ctx.model.GoodsType.findOne({ _id: id });
-        this.success(goodsType);
+        const { goodsColorId } = this.ctx.query;
+        const goodsType = await this.ctx.model.GoodsType.findOne({ _id: id }, {
+            img: 1,
+            name: 1,
+            goods_color_arr: 1,
+        }).lean();
+        // 获取款型下的配色，获得的配色中必须包含goodsColorId
+        const goodsColorFields = {
+            img: 1,
+            name: 1,
+            goods_id_arr: 1,
+            color_name: 1,
+            color_value: 1,
+            color_type: 1,
+        };
+        const targetGoodsColor = await this.ctx.model.GoodsColor.findOne({ _id: goodsColorId }, goodsColorFields);
+        const goodsColorIdArr = goodsType.goods_color_arr;
+        for (let i = 0; i < goodsColorIdArr.length; i++) {
+            if (goodsColorIdArr[i].toString() === goodsColorId) {
+                goodsColorIdArr.splice(i, 1);
+                break;
+            }
+        }
+        const goodsColorArr = await this.ctx.model.GoodsColor.find({
+            _id: { $in: goodsColorIdArr },
+        }, goodsColorFields).limit(10);
+        goodsColorArr.unshift(targetGoodsColor);
+
+        // 再获取目标配色的商品数据
+        const goodsArr = await this.ctx.model.Goods.find({
+            _id: { $in: targetGoodsColor.goods_id_arr },
+        }, {
+            img: 1,
+            sku: 1,
+        });
+        // 删除款型的配色数据，省得浪费带宽
+        delete goodsType.goods_color_arr;
+
+        this.success({
+            goodsType,
+            goodsColorArr,
+            goodsArr,
+        });
     }
+
+    // async showByGoodsColor() {
+    //     const { goodsColorId } = this.ctx.params;
+
+    // }
 }
 
 module.exports = GoodsTypeController;

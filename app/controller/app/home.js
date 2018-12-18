@@ -61,11 +61,20 @@ class HomeController extends Controller {
             goods = goodsArr[index];
             for (let i = 0; i < goodsColorArr.length; i++) {
                 if (goodsColorArr[i]._id.toString() === goods.goods_color_id.toString()) {
+                    if (!goodsColorArr[i].numShop) {
+                        goodsColorArr[i].numShop = 1;
+                    } else {
+                        goodsColorArr[i].numShop += 1;
+                    }
                     skuArr = goods.sku;
                     if (skuArr.length > 0) {
                         skuArr = skuArr.filter(s => s.isInStock).sort(skuSortFun);
-                        if (!goodsColorArr[i].price || goodsColorArr[i].price > skuArr[0].price) {
-                            goodsColorArr[i].price = skuArr[0].price;
+                        if (skuArr.length > 0) {
+                            if (!goodsColorArr[i].price || goodsColorArr[i].price > skuArr[0].price) {
+                                goodsColorArr[i].price = skuArr[0].price;
+                            }
+                        } else {
+                            goodsColorArr[i].price = 0;
                         }
                     }
                     break;
@@ -81,6 +90,7 @@ class HomeController extends Controller {
             img: 1,
             goods_id_arr: 1,
             name: 1,
+            goods_type_id: 1,
         };
         let goodsColorArr = null;
         if (count > 0) {
