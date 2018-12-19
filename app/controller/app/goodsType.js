@@ -55,11 +55,6 @@ class GoodsTypeController extends Controller {
             goodsArr,
         });
     }
-
-    // async showByGoodsColor() {
-    //     const { goodsColorId } = this.ctx.params;
-
-    // }
 }
 
 module.exports = GoodsTypeController;

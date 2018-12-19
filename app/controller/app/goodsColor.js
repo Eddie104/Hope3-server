@@ -11,8 +11,26 @@ class GoodsColorController extends Controller {
 
     async show() {
         const { id } = this.ctx.params;
-        const goodsColor = await this.ctx.model.GoodsColor.findOne({ _id: id });
-        this.success(goodsColor);
+        const goodsColorFields = {
+            img: 1,
+            name: 1,
+            goods_id_arr: 1,
+            color_name: 1,
+            color_value: 1,
+            color_type: 1,
+        };
+        const goodsColor = await this.ctx.model.GoodsColor.findOne({ _id: id }, goodsColorFields);
+        // 再获取目标配色的商品数据
+        const goodsArr = await this.ctx.model.Goods.find({
+            _id: { $in: goodsColor.goods_id_arr },
+        }, {
+            img: 1,
+            sku: 1,
+        });
+        this.success({
+            goodsColor,
+            goodsArr,
+        });
     }
 
     async top() {
