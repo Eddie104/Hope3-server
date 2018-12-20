@@ -104,6 +104,7 @@ class GoodsColorController extends Controller {
                     }
                     await this.ctx.model.GoodsType.update({ _id: goodsColor.goods_type_id }, { $pull: { goods_color_arr: goodsColorArr[i] } });
                     await this.ctx.model.Goods.update({ goods_color_id: goodsColorArr[i] }, { $set: { goods_color_id: mergeTargetGoodsColor } }, { multi: true });
+                    await this.ctx.model.GoodsColor.remove({ _id: goodsColor._id });
                 }
             }
         }

@@ -238,7 +238,7 @@ class HomeController extends Controller {
             }
         }
         // */
-        // /*
+        /*
         const keywords = [
             // 'CORTEZ KENNY',
             // 'PG',
@@ -550,9 +550,131 @@ class HomeController extends Controller {
             // 'Flare AJ1',
             // 'Jordan',
             // 'nike',
-            'AIR FORCE 1',
+            // 'AIR FORCE 1',
+            // 'kobe',
+            // 'CORTEZ',
+            // 'Ultraforce',
+            // 'SB',
+            // 'dunk',
+            // 'STEFAN JANOSKI',
+            // 'lunar',
+            // 'blazer',
+            // 'Kyrie',
+            // 'Pegasus',
+            // 'Foamposite',
+            // 'Monarch',
+            // 'nike',
+            // 'trainer',
+            // 'LEBRON',
+            // 'POSITE',
+            // 'MORE MONEY',
+            // 'SHAKE',
+            // 'air',
+            // 'roshe',
+            // ========adidas=======
+            // 'Ultraboost',
+            // 'Ultra boost',
+            // 'Pureboost',
+            // 'Pure boost',
+            // 'Yeezy',
+            // 'Adidas',
+            // 'Superstar',
+            // 'nmd',
+            // 'Boost',
+            // 'PHARRELL WILLIAMS',
+            // 'PW',
+            // 'TENNIS HU',
+            // 'FUTURECRAFT',
+            // 'PRO',
+            // 'GAZELLE',
+            // 'STAN SMITH',
+            // 'EQT',
+            // 'ADV',
+            // 'I-5923',
+            // 'CAMPUS',
+            // 'TUBULAR',
+            // 'ZX FLUX',
+            // 'CUSHION',
+            // 'Y-3',
+            // 'ENERGY BOOST',
+            // 'PureControl',
+            // 'ACCELERATOR',
+            // 'SWIFT',
+            // 'crazy',
+            // 'CLIMACOOL',
+            // 'CLIMA COOL',
+            // 'SUPPORT',
+            // 'Ace Tango',
+            // 'N-5923',
+            // 'DAME',
+            // 'ALPHABOUNCE',
+            // 'ARSHAM',
+            // 'ADILETTE',
+            // 'HARDEN',
+            // 'ADIZERO',
+            // 'CONTINENTAL',
+            // 'SAMBA',
+            // 'SAMOA',
+            // 'SOBAKOV',
+            // 'BARRICADE',
+            // 'PERFORMANCE',
+            // 'Alexander Wang',
+            // 'POD',
+            // 'ZX 500',
+            // 'SOLARBOOST',
+            // 'ARKYN',
+            // 'DEERUPT',
+            // 'BBALL',
+            // 'BYW',
+            'KAMANDA',
+            'COPA',
+            'FALCON',
+            'UNDFTDX',
+            'SOLAR',
+            'wings',
+            'horns',
+            'PERFORMANCE',
+            'OYSTER',
+            'COURTVANTAGE',
+            'OZWEEGO',
+            'R1',
+            'SPEEDFACTORY',
+            'SEELEY',
+            'ZEBRA',
+            'KITH',
+            'ATTITUDE',
+            'ZX 500',
+            'PORSCHE',
+            'MATCHCOURT',
+            'BUSENITZ',
+            'FLASHBACK',
+            'SUPER',
+            'PLR',
+            'ADI-EASE',
+            'ADIEASE',
+            'NBHD',
+            'CLOUDFOAM',
+            'ROSE',
+            'FORUM',
+            'POWERLIF',
+            'BOUNCE',
+            'IMPACT',
+            'ADISSAGE',
+            'SUPERNOVA',
+            'FOREST',
+            'PREDATOR',
+            'TANGUTSU',
+            'SOCK',
+            'INDOOR',
+            'RAF SIMONS',
+            'CONSORTIUM',
+            'QUESTAR',
+            'PROPHERE',
+            'D ROSE',
+            'FORUM',
+            'ECSTASY',
+            'HAVEN',
         ];
-        // const keywords = [ 'pg' ];
         const or = keywords.map(kw => {
             return {
                 name: {
@@ -572,30 +694,42 @@ class HomeController extends Controller {
         // let goodsColorArr = null;
         // const goodsTypeIdArr = [];
         for (let i = 0; i < pendingGoodsArr.length; i++) {
-            console.log(`${i}/${pendingGoodsArr.length}`);
+            // console.log(`${i}/${pendingGoodsArr.length}`);
             pendingGoods = pendingGoodsArr[i];
             pendingGoodsNumber = pendingGoods.number;
             if (!pendingGoodsNumber) continue;
-            if (pendingGoodsNumber.indexOf(' ') !== -1) {
-                pendingGoodsNumber = pendingGoodsNumber.split(' ')[0];
-            } else if (pendingGoodsNumber.indexOf('-') !== -1) {
-                pendingGoodsNumber = pendingGoodsNumber.split('-')[0];
-            } else {
-                // 如果最后一位不是数字的话，就去掉最后的四位
-                const lastChar = pendingGoodsNumber.substr(pendingGoodsNumber.length - 1, 1);
-                if (isNaN(lastChar)) {
-                    // 去掉最后的四位
-                    pendingGoodsNumber = pendingGoodsNumber.substring(0, pendingGoodsNumber.length - 4);
-                } else {
-                    // 去掉最后的三位
-                    pendingGoodsNumber = pendingGoodsNumber.substring(0, pendingGoodsNumber.length - 3);
-                }
-            }
+            // if (pendingGoodsNumber.indexOf(' ') !== -1) {
+            //     pendingGoodsNumber = pendingGoodsNumber.split(' ')[0];
+            // } else if (pendingGoodsNumber.indexOf('-') !== -1) {
+            //     pendingGoodsNumber = pendingGoodsNumber.split('-')[0];
+            // } else {
+            //     // 如果最后一位不是数字的话，就去掉最后的四位
+            //     const lastChar = pendingGoodsNumber.substr(pendingGoodsNumber.length - 1, 1);
+            //     if (isNaN(lastChar)) {
+            //         // 去掉最后的四位
+            //         pendingGoodsNumber = pendingGoodsNumber.substring(0, pendingGoodsNumber.length - 4);
+            //     } else {
+            //         // 去掉最后的三位
+            //         pendingGoodsNumber = pendingGoodsNumber.substring(0, pendingGoodsNumber.length - 3);
+            //     }
+            // }
 
-            if (pendingGoodsNumber.length !== 6) {
-                console.log(`${pendingGoodsNumber} 的长度不为6，跳过!`);
-                continue;
-            }
+            // if (pendingGoodsNumber.indexOf('-') !== -1) {
+            //     console.log('===', pendingGoodsNumber);
+            //     const arr = pendingGoodsNumber.split('-');
+            //     if (arr.length === 2 && /[a-zA-Z]{3}/.test(arr[1])) {
+            //         pendingGoodsNumber = arr[0];
+            //     } else {
+            //         continue;
+            //     }
+            // } else {
+            //     continue;
+            // }
+
+            // if (pendingGoodsNumber.length !== 6) {
+            //     console.log(`${pendingGoodsNumber} 的长度不为6，跳过!`);
+            //     continue;
+            // }
             console.log(`pendingGoodsNumber => ${pendingGoodsNumber}`);
 
             const goods = await this.ctx.model.Goods.findOne({
@@ -612,7 +746,8 @@ class HomeController extends Controller {
                 _id: goods.goods_type_id,
                 is_deleted: false,
                 brand: {
-                    $in: [ '5aa4f40e30302f3bc95cea7c', '5aba668eee851c35fa151186' ],
+                    // $in: [ '5aa4f40e30302f3bc95cea7c', '5aba668eee851c35fa151186' ],
+                    $in: [ '5ac730f5f6a0472a39440322' ],
                 },
             });
             if (goodsType) {
@@ -651,6 +786,60 @@ class HomeController extends Controller {
                 // 把商品和配色关联上
                 await this.ctx.model.Goods.update({ _id: goods._id }, { $set: { goods_color_id: goodsColor._id } });
                 await this.ctx.model.PendingGoods.update({ _id: pendingGoods._id }, { $set: { is_checked: true } });
+            }
+        }
+        // */
+
+        // /*
+        const goodsTypeArr = await this.ctx.model.GoodsType.find({
+            is_deleted: false,
+            // nike
+            // brand: '5aba668eee851c35fa151186',
+            // jordon
+            brand: '5aa4f40e30302f3bc95cea7c',
+        }, {
+            goods_color_arr: 1,
+        });
+        let goodsColorArr = null;
+        let targetNumber = null;
+        let targetGoodsColorId = null;
+        let goodsColor = null;
+        for (let index = 0; index < goodsTypeArr.length; index++) {
+            console.log(`goodsType => ${index}/${goodsTypeArr.length}`);
+            goodsColorArr = await this.ctx.model.GoodsColor.find({
+                _id: { $in: goodsTypeArr[index].goods_color_arr },
+            }, {
+                number: 1,
+                goods_id_arr: 1,
+                goods_type_id: 1,
+            }).lean();
+            while (goodsColorArr.length > 1) {
+                targetNumber = goodsColorArr[0].number[0];
+                targetGoodsColorId = goodsColorArr[0]._id;
+                goodsColorArr.splice(0, 1);
+                if (/^\w{6}-\w{3}$/.test(targetNumber)) {
+                    console.log(`number = ${targetNumber}`);
+                    for (let i = 0; i < goodsColorArr.length; i++) {
+                        goodsColor = goodsColorArr[i];
+                        if (goodsColor.number[0] === targetNumber) {
+                            for (let j = 0; j < goodsColor.number.length; j++) {
+                                await this.ctx.model.GoodsColor.update({ _id: targetGoodsColorId }, {
+                                    $addToSet: { number: goodsColor.number[j] },
+                                });
+                            }
+                            for (let j = 0; j < goodsColor.goods_id_arr.length; j++) {
+                                await this.ctx.model.GoodsColor.update({ _id: targetGoodsColorId }, {
+                                    $addToSet: { goods_id_arr: goodsColor.goods_id_arr[j] },
+                                });
+                            }
+                            await this.ctx.model.GoodsType.update({ _id: goodsColor.goods_type_id }, { $pull: { goods_color_arr: goodsColor._id } });
+                            await this.ctx.model.Goods.update({ goods_color_id: goodsColor._id }, { $set: { goods_color_id: targetGoodsColorId } }, { multi: true });
+                            await this.ctx.model.GoodsColor.remove({ _id: goodsColor._id });
+
+                            goodsColorArr.splice(i--, 1);
+                        }
+                    }
+                }
             }
         }
         // */
