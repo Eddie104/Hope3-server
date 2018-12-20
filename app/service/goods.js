@@ -32,10 +32,10 @@ class GoodsService extends Service {
                     skuArr = goods.sku;
                     if (skuArr.length > 0) {
                         skuArr = skuArr.filter(skuFilterFun).sort(skuSortFun);
-                        console.log(skuArr.map(s => s.price));
+                        // console.log(skuArr.map(s => s.price));
                         if (skuArr.length > 0) {
                             if (goodsColorArr[i].price < 0 || goodsColorArr[i].price > skuArr[0].price) {
-                                console.log(goodsColorArr[i].price, skuArr[0].price, goodsColorId);
+                                // console.log(goodsColorArr[i].price, skuArr[0].price, goodsColorId);
                                 goodsColorArr[i].price = skuArr[0].price;
                             }
                         }

@@ -180,7 +180,7 @@ class PendingGoodsController extends Controller {
         let crawlCount = null;
         let pendingGoodsNumber = null;
         for (let i = 0; i < pendingGoodsArr.length; i++) {
-            console.log(`${i}/${pendingGoodsArr.length}`);
+            // console.log(`${i}/${pendingGoodsArr.length}`);
             pendingGoods = pendingGoodsArr[i];
             pendingGoodsNumber = pendingGoods.number;
             if (pendingGoodsNumber) {
@@ -242,9 +242,9 @@ class PendingGoodsController extends Controller {
                     }
                 }
             } else {
-                console.log('======');
-                console.log(pendingGoods);
-                console.log('======');
+                // console.log('======');
+                // console.log(pendingGoods);
+                // console.log('======');
             }
         }
         this.success();

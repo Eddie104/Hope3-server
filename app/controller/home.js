@@ -238,7 +238,7 @@ class HomeController extends Controller {
             }
         }
         // */
-        /*
+        // /*
         const keywords = [
             // 'CORTEZ KENNY',
             // 'PG',
@@ -790,7 +790,7 @@ class HomeController extends Controller {
         }
         // */
 
-        // /*
+        /*
         const goodsTypeArr = await this.ctx.model.GoodsType.find({
             is_deleted: false,
             // nike
@@ -839,6 +839,39 @@ class HomeController extends Controller {
                             goodsColorArr.splice(i--, 1);
                         }
                     }
+                }
+            }
+        }
+        // */
+
+        /*
+        const goodsColorArr = await this.ctx.model.GoodsColor.find({}, { number: 1, goods_id_arr: 1 });
+        let goodsColor = null;
+        let goodsArr = null;
+        let exists = false;
+        for (let index = 16458; index < goodsColorArr.length; index++) {
+            console.log(`${index}/${goodsColorArr.length}`);
+            goodsColor = goodsColorArr[index];
+            goodsArr = await this.ctx.model.Goods.find({
+                _id: { $in: goodsColor.goods_id_arr },
+            }, { number: 1, url: 1 });
+            for (let i = 0; i < goodsArr.length; i++) {
+                exists = false;
+                for (let j = 0; j < goodsColor.number.length; j++) {
+                    if (!goodsColor.number[j]) {
+                        console.log('=======');
+                        console.log(goodsColor._id);
+                        continue;
+                    }
+                    if (goodsColor.number[j].includes(goodsArr[i].number)) {
+                        exists = true;
+                        break;
+                    }
+                }
+                if (!exists) {
+                    await this.ctx.model.Goods.remove({ _id: goodsArr[i]._id });
+                    await this.ctx.model.PendingGoods.update({ url: goodsArr[i].url }, { is_checked: false });
+                    await this.ctx.model.GoodsColor.update({ _id: goodsColor._id }, { $pull: { goods_id_arr: goodsArr[i]._id } });
                 }
             }
         }

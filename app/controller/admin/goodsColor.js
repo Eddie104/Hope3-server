@@ -113,8 +113,8 @@ class GoodsColorController extends Controller {
 
     async removeGoods() {
         const { _id, goods_id } = this.ctx.params;
-        console.log(_id);
-        console.log(goods_id);
+        // console.log(_id);
+        // console.log(goods_id);
         let goods_color = await this.ctx.model.GoodsColor.findOne({ _id, goods_id_arr: goods_id }, { goods_id_arr: 1 });
         if (goods_color) {
             const goods = await this.ctx.model.Goods.findOne({ _id: goods_id }, { url: 1 });
