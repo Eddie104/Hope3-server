@@ -267,7 +267,6 @@ class HomeController extends Controller {
             'ROOKIE',
             'FLYSTEPPER',
             'PAUL RODRIGUEZ',
-            'LUNAR AIR 180',
             'SB WHAT THE DUNK',
             'AF-X',
             'LUNAR BRAATA',
@@ -365,7 +364,6 @@ class HomeController extends Controller {
             'Alpha Huarache',
             'Wildhorse',
             'Vapor Speed',
-            'Air Wild',
             'Vapor Shark',
             'Mamba',
             'Pocketknife',
@@ -374,9 +372,7 @@ class HomeController extends Controller {
             'Zoom',
             'SB Portmore',
             'Vapor Varsity',
-            'Air Versitile',
             'Zoom Structure',
-            'Air Max 2011',
             'Hoodland',
             'Court Lite',
             'Lupinek',
@@ -436,7 +432,6 @@ class HomeController extends Controller {
             'Kobe AD',
             'Flylon Train',
             'Flow Laser',
-            'Air Skylon',
             'React Element',
             'Team Classic',
             'Blazer AC',
@@ -550,7 +545,6 @@ class HomeController extends Controller {
             'Flare AJ1',
             'Jordan',
             'nike',
-            'AIR FORCE',
             'kobe',
             'CORTEZ',
             'Ultraforce',
@@ -793,13 +787,11 @@ class HomeController extends Controller {
         }
         // */
 
-        /*
+        // /* 消灭款型下number相同的配色
         const goodsTypeArr = await this.ctx.model.GoodsType.find({
             is_deleted: false,
-            // nike
-            // brand: '5aba668eee851c35fa151186',
-            // jordon
-            brand: '5aa4f40e30302f3bc95cea7c',
+            // jordon 和 nike
+            brand: { $in: [ '5aa4f40e30302f3bc95cea7c', '5aba668eee851c35fa151186' ] },
         }, {
             goods_color_arr: 1,
         });
@@ -847,7 +839,7 @@ class HomeController extends Controller {
         }
         // */
 
-        // /*
+        /* 删除和配色number不符合的商品
         const goodsColorArr = await this.ctx.model.GoodsColor.find({}, { number: 1, goods_id_arr: 1 });
         let goodsColor = null;
         let goodsArr = null;
