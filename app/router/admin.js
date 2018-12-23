@@ -95,6 +95,8 @@ module.exports = app => {
 
     router.get('/api/admin/remove_goods/:_id/:goods_id', app.oAuth2Server.authenticate(), controller.admin.goodsColor.removeGoods);
 
+    router.post('/api/admin/goods_color/change_goods_type', app.oAuth2Server.authenticate(), controller.admin.goodsColor.changeGoodsType);
+
     // 商品相关
     router.get('/api/admin/detail_goods/:_id', app.oAuth2Server.authenticate(), controller.admin.goods.detail);
 

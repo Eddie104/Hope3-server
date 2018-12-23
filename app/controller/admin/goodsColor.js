@@ -126,6 +126,28 @@ class GoodsColorController extends Controller {
             this.fail(`没有找到_id为${_id}包含goods_id为${goods_id}的配色`);
         }
     }
+
+    async changeGoodsType() {
+        const { goodsColorIDArr, goodsTypeId } = this.ctx.request.body;
+        const goodsType = await this.ctx.model.GoodsType.findOne({ _id: goodsTypeId, is_deleted: false }, { goods_color_arr: 1 });
+        if (goodsType) {
+            let goodsColor = null;
+            for (let index = 0; index < goodsColorIDArr.length; index++) {
+                goodsColor = await this.ctx.model.GoodsColor.findOne({
+                    _id: goodsColorIDArr[index],
+                }, { goods_id_arr: 1, goods_type_id: 1 });
+                if (goodsColor) {
+                    await this.ctx.model.Goods.update({ _id: { $in: goodsColor.goods_id_arr } }, { $set: { goods_type_id: goodsTypeId } });
+                    await this.ctx.model.GoodsType.update({ _id: goodsColor.goods_type_id }, { $pull: { goods_color_arr: goodsColor._id } });
+                    await this.ctx.model.GoodsColor.update({ _id: goodsColor._id }, { $set: { goods_type_id: goodsTypeId } });
+                    await this.ctx.model.GoodsType.update({ _id: goodsTypeId }, { $addToSet: { goods_color_arr: goodsColor._id } });
+                }
+            }
+            this.success();
+        } else {
+            this.fail(`没有找到id为${goodsTypeId}的款型`);
+        }
+    }
 }
 
 module.exports = GoodsColorController;
