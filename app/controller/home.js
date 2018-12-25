@@ -790,8 +790,8 @@ class HomeController extends Controller {
         // /* 消灭款型下number相同的配色
         const goodsTypeArr = await this.ctx.model.GoodsType.find({
             is_deleted: false,
-            // jordon 和 nike
-            brand: { $in: [ '5aa4f40e30302f3bc95cea7c', '5aba668eee851c35fa151186' ] },
+            // jordon 和 nike 阿斯达斯
+            brand: { $in: [ '5aa4f40e30302f3bc95cea7c', '5aba668eee851c35fa151186', '5ac730f5f6a0472a39440322' ] },
         }, {
             goods_color_arr: 1,
         });
