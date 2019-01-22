@@ -238,7 +238,7 @@ class HomeController extends Controller {
             }
         }
         // */
-        // /*
+        /*
         const keywords = [
             'CORTEZ KENNY',
             'PG',
@@ -676,14 +676,14 @@ class HomeController extends Controller {
                 },
             };
         });
-        // const pendingGoodsArr = await this.ctx.model.PendingGoods.find({
-        //     is_checked: { $ne: true },
-        //     $or: or,
-        // });
-        // 这个是不考虑关键字的
         const pendingGoodsArr = await this.ctx.model.PendingGoods.find({
             is_checked: { $ne: true },
+            $or: or,
         });
+        // 这个是不考虑关键字的
+        // const pendingGoodsArr = await this.ctx.model.PendingGoods.find({
+        //     is_checked: { $ne: true },
+        // });
         let pendingGoods = null;
         let pendingGoodsNumber = null;
         let goodsColor = null;
@@ -695,22 +695,22 @@ class HomeController extends Controller {
             pendingGoods = pendingGoodsArr[i];
             if (!pendingGoods.name) continue;
             pendingGoodsNumber = pendingGoods.number;
-            // if (!pendingGoodsNumber) continue;
-            // if (pendingGoodsNumber.indexOf(' ') !== -1) {
-            //     pendingGoodsNumber = pendingGoodsNumber.split(' ')[0];
-            // } else if (pendingGoodsNumber.indexOf('-') !== -1) {
-            //     pendingGoodsNumber = pendingGoodsNumber.split('-')[0];
-            // } else {
-            //     // 如果最后一位不是数字的话，就去掉最后的四位
-            //     const lastChar = pendingGoodsNumber.substr(pendingGoodsNumber.length - 1, 1);
-            //     if (isNaN(lastChar)) {
-            //         // 去掉最后的四位
-            //         pendingGoodsNumber = pendingGoodsNumber.substring(0, pendingGoodsNumber.length - 4);
-            //     } else {
-            //         // 去掉最后的三位
-            //         pendingGoodsNumber = pendingGoodsNumber.substring(0, pendingGoodsNumber.length - 3);
-            //     }
-            // }
+            if (!pendingGoodsNumber) continue;
+            if (pendingGoodsNumber.indexOf(' ') !== -1) {
+                pendingGoodsNumber = pendingGoodsNumber.split(' ')[0];
+            } else if (pendingGoodsNumber.indexOf('-') !== -1) {
+                pendingGoodsNumber = pendingGoodsNumber.split('-')[0];
+            } else {
+                // 如果最后一位不是数字的话，就去掉最后的四位
+                const lastChar = pendingGoodsNumber.substr(pendingGoodsNumber.length - 1, 1);
+                if (isNaN(lastChar)) {
+                    // 去掉最后的四位
+                    pendingGoodsNumber = pendingGoodsNumber.substring(0, pendingGoodsNumber.length - 4);
+                } else {
+                    // 去掉最后的三位
+                    pendingGoodsNumber = pendingGoodsNumber.substring(0, pendingGoodsNumber.length - 3);
+                }
+            }
 
             // 以下这段，暂时用不到
             // if (pendingGoodsNumber.indexOf('-') !== -1) {
@@ -725,18 +725,18 @@ class HomeController extends Controller {
             //     continue;
             // }
 
-            // if (pendingGoodsNumber.length !== 6) {
-            //     console.log(`${pendingGoodsNumber} 的长度不为6，跳过!`);
-            //     continue;
-            // }
+            if (pendingGoodsNumber.length !== 6) {
+                console.log(`${pendingGoodsNumber} 的长度不为6，跳过!`);
+                continue;
+            }
             console.log(`pendingGoodsNumber => ${pendingGoodsNumber}`);
 
             const goods = await this.ctx.model.Goods.findOne({
-                // number: {
-                //     $regex: pendingGoodsNumber,
-                //     $options: 'i',
-                // },
-                number: pendingGoodsNumber,
+                number: {
+                    $regex: pendingGoodsNumber,
+                    $options: 'i',
+                },
+                // number: pendingGoodsNumber,
             }, { goods_type_id: 1 });
             if (!goods) {
                 continue;
@@ -745,12 +745,12 @@ class HomeController extends Controller {
             goodsType = await this.ctx.model.GoodsType.findOne({
                 _id: goods.goods_type_id,
                 is_deleted: false,
-                // brand: {
-                //     // AIR JORDAN     NIKE
-                //     $in: [ '5aa4f40e30302f3bc95cea7c', '5aba668eee851c35fa151186' ],
-                //     // ADIDAS
-                //     // $in: [ '5ac730f5f6a0472a39440322' ],
-                // },
+                brand: {
+                    // AIR JORDAN     NIKE
+                    $in: [ '5aa4f40e30302f3bc95cea7c', '5aba668eee851c35fa151186' ],
+                    // ADIDAS
+                    // $in: [ '5ac730f5f6a0472a39440322' ],
+                },
             });
             if (goodsType) {
                 const img = Array.isArray(pendingGoods.imgs) && pendingGoods.imgs.length > 0 ? `${pendingGoods.platform}/${pendingGoods.imgs[0]}` : '';
@@ -792,7 +792,7 @@ class HomeController extends Controller {
         }
         // */
 
-        /* 消灭款型下number相同的配色
+        // /* 消灭款型下number相同的配色
         const goodsTypeArr = await this.ctx.model.GoodsType.find({
             is_deleted: false,
             // jordon 和 nike 阿斯达斯
