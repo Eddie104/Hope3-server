@@ -16,5 +16,7 @@ module.exports = app => {
         img: { type: String, default: '' },
         is_deleted: { type: Boolean, default: false },
         is_hot: { type: Boolean, default: false },
+        // 是否在app上展示出来
+        is_showing_on_app: { type: Boolean, default: true },
     }, { collection: 'hope_goodstypes' }));
 };

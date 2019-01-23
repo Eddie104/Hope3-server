@@ -85,6 +85,12 @@ class PendingGoodsController extends Controller {
         this.success();
     }
 
+    async deleteBatch() {
+        const { idArr } = this.ctx.request.body;
+        await this.ctx.model.PendingGoods.update({ _id: { $in: idArr } }, { $set: { is_deleted: true } }, { multi: true });
+        this.success();
+    }
+
     async autoConnectByName() {
         const pendingGoodsArr = await this.ctx.model.PendingGoods.find({ is_checked: { $ne: true } }, {
             name: 1,

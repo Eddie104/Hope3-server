@@ -54,6 +54,8 @@ module.exports = app => {
 
     router.get('/api/admin/delete_pending_goods/:_id', app.oAuth2Server.authenticate(), controller.admin.pendingGoods.delete);
 
+    router.post('/api/admin/delete_pending_goods_batch', app.oAuth2Server.authenticate(), controller.admin.pendingGoods.deleteBatch);
+
     // router.post('/api/admin/add_goods_type_by_pending_goods', app.oAuth2Server.authenticate(), controller.admin.pendingGoods.createGoodsType);
 
     // router.post('/api/admin/relation_goods_type_by_pending_goods', app.oAuth2Server.authenticate(), controller.admin.pendingGoods.relationGoodsType);
@@ -81,6 +83,8 @@ module.exports = app => {
     router.get('/api/admin/detail_goods_type/:_id', app.oAuth2Server.authenticate(), controller.admin.goodsType.detail);
 
     router.get('/api/admin/remove_goods_color/:_id/:goods_color_id', app.oAuth2Server.authenticate(), controller.admin.goodsType.removeGoodsColor);
+
+    router.post('/api/admin/set_goods_type_showing_in_app', app.oAuth2Server.authenticate(), controller.admin.goodsType.setGoodsTypeShowingInApp);
 
     // 配色相关
     router.post('/api/admin/detail_goods_color', app.oAuth2Server.authenticate(), controller.admin.goodsColor.detail);

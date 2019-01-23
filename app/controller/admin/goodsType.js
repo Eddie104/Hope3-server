@@ -380,6 +380,12 @@ class GoodsTypeController extends Controller {
             this.fail(`没有找到_id为${_id}包含配色_id为${goods_color_id}的款型`);
         }
     }
+
+    async setGoodsTypeShowingInApp() {
+        const { id, flag } = this.ctx.request.body;
+        await this.ctx.model.GoodsType.update({ _id: id }, { is_showing_on_app: !!flag });
+        this.success();
+    }
 }
 
 module.exports = GoodsTypeController;
