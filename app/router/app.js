@@ -8,29 +8,36 @@ module.exports = app => {
     // POST    /posts	       posts	app.controllers.posts.create
     // PUT     /posts/:id	    post	app.controllers.posts.update
     // DELETE  /posts/:id	    post	app.controllers.posts.destroy
-    // app
-    router.resources('series', '/api/app/series', controller.app.series);
 
-    router.get('/api/app/series/top/:count', controller.app.series.top);
+    const jwt = app.middleware.jwt();
+
+    router.post('/api/app/user/register', controller.app.user.register);
+
+    router.post('/api/app/user/login', controller.app.user.login);
+
+    // app
+    router.resources('series', '/api/app/series', jwt, controller.app.series);
+
+    router.get('/api/app/series/top/:count', jwt, controller.app.series.top);
 
     // ----------- home --------------
-    router.get('/api/app/home/:seriesCount/:popularGoodsColorCount/:recommendGoodsColorCount', controller.app.home.index);
+    router.get('/api/app/home/:seriesCount/:popularGoodsColorCount/:recommendGoodsColorCount', jwt, controller.app.home.index);
 
     // ----------- goodsType --------------
 
-    router.resources('goodsType', '/api/app/goodsType', controller.app.goodsType);
+    router.resources('goodsType', '/api/app/goodsType', jwt, controller.app.goodsType);
 
     // router.get('/api/app/goodsType/show/:goodsColorId', controller.app.goodsType.showByGoodsColor);
 
     // ----------- goodsColor --------------
 
-    router.resources('goodsColor', '/api/app/goodsColor', controller.app.goodsColor);
+    router.resources('goodsColor', '/api/app/goodsColor', jwt, controller.app.goodsColor);
 
-    router.get('/api/app/goodsColor/top/:count', controller.app.goodsColor.top);
+    router.get('/api/app/goodsColor/top/:count', jwt, controller.app.goodsColor.top);
 
-    router.get('/api/app/goodsColor/recommend/:page/:pageSize', controller.app.goodsColor.recommend);
+    router.get('/api/app/goodsColor/recommend/:page/:pageSize', jwt, controller.app.goodsColor.recommend);
 
     // ----------- goods --------------
 
-    router.resources('goods', '/api/app/goods', controller.app.goods);
+    router.resources('goods', '/api/app/goods', jwt, controller.app.goods);
 };

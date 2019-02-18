@@ -88,6 +88,10 @@ module.exports = appInfo => {
         ],
     };
 
+    config.jwt = {
+        secret: 'HL$Pl0tKH25W4pj$aU$xJy37',
+    };
+
     return config;
 };
 
