@@ -2,10 +2,16 @@ const Controller = require('../../core/baseController');
 
 class GoodsTypeController extends Controller {
     async index() {
-        let { page, pageSize } = this.ctx.query;
+        let { page, pageSize, series } = this.ctx.query;
         page = this.ctx.helper.toInt(page, 1);
         pageSize = this.ctx.helper.toInt(pageSize, 10);
-        const goodsTypeArr = await this.ctx.model.GoodsType.find().skip((page - 1) * pageSize).limit(pageSize);
+        const query = {
+            is_deleted: false,
+        };
+        if (this.ctx.helper.isObjectId(series)) {
+            query.series = series;
+        }
+        const goodsTypeArr = await this.ctx.model.GoodsType.find(query).skip((page - 1) * pageSize).limit(pageSize);
         this.success(goodsTypeArr);
     }
 

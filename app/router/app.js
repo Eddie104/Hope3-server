@@ -20,6 +20,9 @@ module.exports = app => {
 
     router.get('/api/app/series/top/:count', jwt, controller.app.series.top);
 
+    // ----------- brand --------------
+    router.resources('brand', '/api/app/brand', jwt, controller.app.brand);
+
     // ----------- home --------------
     router.get('/api/app/home/:seriesCount/:popularGoodsColorCount/:recommendGoodsColorCount', jwt, controller.app.home.index);
 

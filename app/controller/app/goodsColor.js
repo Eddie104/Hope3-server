@@ -136,6 +136,26 @@ class GoodsColorController extends Controller {
             goodsColorArr,
         });
     }
+
+    // async ttt() {
+    //     const { series } = this.ctx.params;
+
+    //     count = this.ctx.helper.toInt(count, 16);
+    //     const fields = {
+    //         img: 1,
+    //         goods_id_arr: 1,
+    //         name: 1,
+    //         goods_type_id: 1,
+    //     };
+    //     let goodsColorArr = null;
+    //     if (count > 0) {
+    //         goodsColorArr = await this.ctx.model.GoodsColor.find(query, fields).limit(count).lean();
+    //     } else {
+    //         goodsColorArr = await this.ctx.model.GoodsColor.find(query, fields).lean();
+    //     }
+    //     goodsColorArr = await this.ctx.service.goods.createLowestPrice(goodsColorArr);
+    //     return goodsColorArr;
+    // }
 }
 
 module.exports = GoodsColorController;
